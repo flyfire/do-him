@@ -233,7 +233,7 @@ DH.Game=DH.newClass({
 			if (this.pausing){
 				this.onPausing(deltaTime);
 			}else if ( deltaTime>1 ){
-				this.timer.runDeferJobs();
+				this.timer.runTasks();
 				this.update(deltaTime);
 				this.clear(deltaTime);
 				this.render(deltaTime);

@@ -19,11 +19,11 @@ DH.Timer=DH.newClass({
 		}
 		return this;		
 	},
-	removeDeferJob : function(idx){
+	removeTask : function(idx){
 		//this.queue[idx]=null;
 		this.queue.splice(idx, 1);
 	},
-	addDeferJob : function(fn,timeout){
+	addTask : function(fn,timeout){
 		var now=Date.now();
 		this.queue.push({
 			time : now,
@@ -32,18 +32,18 @@ DH.Timer=DH.newClass({
 		});
 		return this.queue.length-1;
 	},
-	runDeferJob : function(){
+	runTask : function(){
 		
 	},
 
-	runDeferJobs : function(){
+	runTasks : function(){
 		var now=Date.now();
 		for (var i=0,len=this.queue.length;i<len;i++){
 			var q=this.queue[i];
 			if (now>=q.runTime){
 				var fn=q.fn;
 				fn();
-				this.removeDeferJob(i);
+				this.removeTask(i);
 				i--;
 				len--;
 				//fn();

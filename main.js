@@ -28,6 +28,7 @@ var game=scope.game=new DH.Game({
 	
 	resList : [
 		{ id : "player" , url : "./res/person.png" },
+		{ id : "flower" , url : "./res/flower.png" },
 		{ id : "tiles" , url : "./res/tiles.png" }
 	],
 
@@ -169,8 +170,8 @@ var game=scope.game=new DH.Game({
 
 				this.player=new Person({
 					id : DH.ID_SEED,
-					x : 100,
-					y : 100,
+					x : 200,
+					y : 200,
 					img : this.game.getRes("player")
 
 				});
@@ -192,6 +193,18 @@ var game=scope.game=new DH.Game({
 					weaponImgHeight : this.player.weaponImgHeight ,
 					map : this.map 
 				});	
+
+				this.flowerImg=this.game.getRes("flower");
+				this.flowerList=[];
+
+				var flower=new Flower({
+					x : 200,
+					y : 300,
+					img : this.flowerImg
+				});
+				flower.init();
+
+				this.flowerList.push(flower);
 			},
 
 
@@ -199,6 +212,16 @@ var game=scope.game=new DH.Game({
 					
 				this.player.update(deltaTime);
 				this.map.update(deltaTime);
+
+				for (var i=this.flowerList.length-1;i>=0;i--){
+					var f=this.flowerList[i];
+					f.update(deltaTime);
+					if (f.alpha==0){
+						f.img=null;
+						this.flowerList.splice(i,1);
+					}
+				}
+				
 			},
 
 			drawBG : function(context){
@@ -214,7 +237,15 @@ var game=scope.game=new DH.Game({
 					[12,"npc_1",300,300,90,true]
 				];
 				var share=this.personShare;
-				
+
+				// if (!window.taskAdded){
+				// 	window.taskAdded=true;
+				// 	this.game.timer.addTask(function(){
+				// 			console.log(123)
+				// 			window.taskAdded=false;
+				// 		},1000)
+				// }
+						
 				for (var i=this.player.personList.length-1;i>=0;i--){
 					var p=this.player.personList[i];
 					if (p[5]==2){
@@ -256,6 +287,10 @@ var game=scope.game=new DH.Game({
 				context.restore();
 
 				this.player.render( context );
+				for (var i=this.flowerList.length-1;i>=0;i--){
+					var f=this.flowerList[i];
+					f.render(context,this.map.x,this.map.y);
+				}
 			},
 
 			handleInput : function(deltaTime){

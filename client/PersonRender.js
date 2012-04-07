@@ -87,6 +87,7 @@ var proto={
 		context.fillText(this.name,this.x-this.map.x-20,this.y-this.map.y-30);
 	},
 
+
 	renderWeapon : function(context){
 
 		if (this.state==1){
@@ -120,6 +121,51 @@ var proto={
 
 })();
 
+var Flower = function(cfg){	
+
+	for (var property in cfg ){
+		this[property]=cfg[property];
+	}
+
+};
+Flower.prototype={
+
+	constructor : Flower ,
+	x : 0,
+	y : 0,
+	alpha : 1 ,
+	scale : 0.1 ,
+
+	img : null,
+
+	init : function(){
+		this.baseX=this.img.width/2;
+		this.baseY=this.img.height/2;
+	},
+
+	update : function(deltaTime){
+
+		this.alpha-=deltaTime*0.0004;
+		this.alpha=Math.max(0,this.alpha);
+		this.scale+=deltaTime*0.003;
+
+
+	},
+
+	render : function(context,ox,oy){
+		var x=this.x-ox;
+		var y=this.y-oy;
+		var alpha=this.alpha;
+		var scale=this.scale;
+		context.globalAlpha=alpha;
+		context.save();
+		context.translate(x,y);
+		context.scale(scale,scale);
+		context.drawImage(this.img,-this.baseX,-this.baseY);
+		context.restore();
+		context.globalAlpha=1;
+	}
+}
 
 var PersonShare=function(cfg){	
 
