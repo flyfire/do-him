@@ -7,10 +7,17 @@ var WIDTH = 800,
 
 var DH=scope.DH;
 
-DH.CONST.DEG_90=90 * Math.PI/180;
 DH.CONST.DEG_TO_RAD=Math.PI/180;
 DH.CONST.RAD_TO_DEG=180/Math.PI;
+DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
 
+DH.CONST.CMD={
+	login : "in",
+	leave : "l",
+	info : "i",
+	update : "u",
+	err : "e"
+};
 
 
 var FPS=30;
@@ -39,7 +46,6 @@ var game=scope.game=new DH.Game({
 
 	beforeLoad :function(){
 
-
 	},
 	
 	onLoading : function(loadedCount,totalCount){
@@ -47,6 +53,9 @@ var game=scope.game=new DH.Game({
 	},
 
 	onLoad : function(){
+
+		this.initWebSocket();
+
 
 		var autostart=true;
 
@@ -62,6 +71,39 @@ var game=scope.game=new DH.Game({
 	
 	},
 
+	ws : null,
+
+	initWebSocket : function(){
+		if (window["WebSocket"]) {
+
+		    var host=this.host||document.location.hostname||"localhost";
+		    
+		    var port=this.port||88;
+
+		    var conn = new WebSocket("ws://"+host+":"+ port +"/");
+
+		    conn.onmessage = function(evt) {
+		      console.log(evt.data);
+		    };
+
+		    conn.onclose = function() {
+		      console.log("** you have been disconnected");
+		    };
+
+		    conn.onopen = function(){
+		      console.log("** you have been connected");
+		    }
+		     conn.onerror = function(){
+		      console.log("** you have error");
+		    }
+		    this.ws=conn;
+		    // conn.close();
+		    // if(conn && conn.readyState == 1){
+		    // 
+		    // }
+		}
+
+	},
 	onInit : function(){
 		
 		this.timeBar=$$('.time');
@@ -69,6 +111,7 @@ var game=scope.game=new DH.Game({
 		this.hiScoreBar=$$('.hi-score');
 
 		DH.initEvent();
+
 	},
 
 	handleInput : function(deltaTime){
@@ -106,6 +149,11 @@ var game=scope.game=new DH.Game({
 		});
 	},
 
+	sendPersonInfo : function(infoStr){
+		this.ws.send(infoStr);
+
+	},
+
 	getStageInstance : function(idx){
 		return new DH.Stage({
 
@@ -136,6 +184,7 @@ var game=scope.game=new DH.Game({
 				});
 
 				this.player=new Person({
+					id : DH.ID_SEED,
 					x : 100,
 					y : 100,
 					img : this.game.getRes("player")
@@ -176,17 +225,18 @@ var game=scope.game=new DH.Game({
 				this.map.render( context );
 
 				this.personList=[
-					[12,300,300,90,true]
+					[12,"npc_1",300,300,90,true]
 				];
 				var share=this.personShare;
 				for (var i=this.personList.length-1;i>=0;i--){
 					var p=this.personList[i];
 
 					share.id=p[0];
-					share.x=p[1];
-					share.y=p[2];
-					share.rotation=p[3];
-					share.state=p[4];
+					share.name=p[1];
+					share.x=p[2];
+					share.y=p[3];
+					share.rotation=p[4];
+					share.state=p[5];
 
 					
 
@@ -207,7 +257,7 @@ var game=scope.game=new DH.Game({
 
 				context.save();
 
-				this.player.view.drawPath(context,-this.map.x,-this.map.y);
+				this.player.view.drawPath(context,this.map.x,this.map.y);
 
 				// context.clip();
 				
@@ -224,55 +274,75 @@ var game=scope.game=new DH.Game({
 
 				this.player.walk=false;
 
+				var rotation=null;
+
+				var changed=false;
+
 				if (joystick.moveDistance>=10){
 					
 					this.player.walk=true;
 
-					var r=joystick.rotation;
+					rotation=joystick.rotation;
 
-					this.player.setRotation(r);
-					
-					return;
+					changed=true;
 
-				}
-
-				var up=DH.KeyState[DH.Key.W]||DH.KeyState[DH.Key.UP];
-				var down=DH.KeyState[DH.Key.S]||DH.KeyState[DH.Key.DOWN];
-				var left=DH.KeyState[DH.Key.A]||DH.KeyState[DH.Key.LEFT];
-				var right=DH.KeyState[DH.Key.D]||DH.KeyState[DH.Key.RIGHT];
-				var gan=DH.KeyState[DH.Key.J]
-				
-				var speedY=0,speedX=0;
-				if (up && !down){
-					speedY=-1;
-				}else if (down && !up){
-					speedY=1;	
 				}else{
-					speedY=0;	
-				}			
 
-				if (left && !right){
-					speedX=-1;
-				}else if (right && !left){
-					speedX=1;
-				}else{
-					speedX=0;	
+					var up=DH.KeyState[DH.Key.W]||DH.KeyState[DH.Key.UP];
+					var down=DH.KeyState[DH.Key.S]||DH.KeyState[DH.Key.DOWN];
+					var left=DH.KeyState[DH.Key.A]||DH.KeyState[DH.Key.LEFT];
+					var right=DH.KeyState[DH.Key.D]||DH.KeyState[DH.Key.RIGHT];
+					var rage=!!DH.KeyState[DH.Key.J];
+
+					var speedY=0,speedX=0;
+					if (up && !down){
+						speedY=-1;
+					}else if (down && !up){
+						speedY=1;	
+					}else{
+						speedY=0;	
+					}			
+
+					if (left && !right){
+						speedX=-1;
+					}else if (right && !left){
+						speedX=1;
+					}else{
+						speedX=0;	
+					}
+
+					if (speedX||speedY){
+						this.player.walk=true;
+
+						dx=speedX;
+						dy=speedY;
+
+						var rad=Math.atan2(dy, dx);	
+						rotation=rad*DH.CONST.RAD_TO_DEG;
+						
+						changed=true;
+					}
+					this.player.want2Rage=rage;
+
 				}
 
-				if (speedX||speedY){
-					this.player.walk=true;
+				var infoStr="["+
+						'"'+DH.CONST.CMD.info+'",'+
+						 this.player.id +","+ 
+						 rotation +","+ 
+						 this.player.walk+","+ 
+						 this.player.want2Rage 
+						 +"]";
+				this.game.sendPersonInfo( infoStr );
 
-					dx=speedX;
-					dy=speedY;
-
-					var rad=Math.atan2(dy, dx);	
-					var deg=rad*DH.CONST.RAD_TO_DEG;
-					this.player.setRotation(deg);
-				}
-
-				if (gan){
+				if (this.player.want2Rage){
 					this.player.rage();
+					this.player.want2Rage=false;
 				}
+				if (changed){
+					this.player.setRotation(rotation);
+				}
+
 
 
 			}
@@ -363,7 +433,7 @@ var button=new Toucher.Tap({
 		return touchWrapper.startTarget.id=="stick2";
 	},
 	onTap : function(touchWrappers,event,touchController){
-		game.currentStage.player.rage();
+		game.currentStage.player.want2Rage=true;
 	}
 
 });
