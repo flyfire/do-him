@@ -71,6 +71,7 @@ ViewField.prototype={
 		context.lineTo( poly[0][0] ,poly[0][1]);
 
 		context.closePath();
+		
 
 	}
 

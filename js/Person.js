@@ -26,8 +26,7 @@ Person.prototype={
 	baseY : 40,
 	walk : false ,
 
-	bodyLine : null,
-	bodyAABB : null,
+	bodyBox : null,
 	AABB : null,
 
 	view : null ,
@@ -46,10 +45,18 @@ Person.prototype={
 	weaponImgHeight : 24 ,
 
 	power : 100 ,
-	powerSpeed : 0.5,
+	powerSpeed : 0.4,
 
 
 	init : function(){
+
+		this.bodyBox=[
+			[],
+			[],
+			[],
+			[]
+
+		],
 
 		this.view=new ViewField({
 			person : this
@@ -70,12 +77,13 @@ Person.prototype={
 
 	},
 	rage : function(){
-		if (this.power==100){
+		if (this.power==100 && this.state!=1){
 			this.state=1;
 		}
 	},
 
 	update : function(deltaTime ){
+
 		if (this.state==1){
 			this.power-=this.powerSpeed;
 			if (this.power<=0){
@@ -94,18 +102,18 @@ Person.prototype={
 			return
 		}
 
-		var speedR=this.speedR*(this.state==1?1.5:1);
-		var speed=this.speed*(this.state==1?1.5:1);
+		var speedR=this.speedR*(this.state==1?1.8:1);
+		var speed=this.speed*(this.state==1?1.8:1);
 
 		this.rotation=(this.rotation+360)%360;
 		this.rotationD=(this.rotationD+360)%360;
 
 		var deltaR=0;
 		var dr=this.rotationD-this.rotation;
+
 		if (Math.abs(dr)<=speedR || Math.abs(dr)>=360-speedR){
 			this.rotation=this.rotationD;
 			this.view.rotate(dr);
-			dr=0;
 		}else{
 			
 			if (0<dr && dr<180){
@@ -121,20 +129,19 @@ Person.prototype={
 			this.view.rotate(deltaR);
 		}
 
-		if (dr==0){
-			var rad=this.rotation*DH.CONST.DEG_TO_RAD;
-			var speedX=speed*Math.cos(rad);
-			var speedY=speed*Math.sin(rad);
+		var rad=this.rotationD*DH.CONST.DEG_TO_RAD;
+		var speedX=speed*Math.cos(rad);
+		var speedY=speed*Math.sin(rad);
+
+		if (speedX ||speedY) {
 			this.x+=speedX;
 			this.y+=speedY;
-
 			this.view.move(speedX,speedY);
-
-
-		}else{
 		}
 
 		this.updateAABB();
+
+
 
 	},
 
@@ -159,7 +166,8 @@ Person.prototype={
 
 		var aabb=this.AABB;
 
-		var ext=100;
+		var ext=80;
+
 		aabb[0]=minX-ext;
 		aabb[1]=minY-ext;
 		aabb[2]=maxX+ext;
@@ -179,13 +187,7 @@ Person.prototype={
 
 		context.translate( -this.baseX , -this.baseY );
 
-		if (this.state==1){
-			var ox=35, oy=30;
-			context.translate( ox , oy );
-			context.drawImage(this.img, this.imgWidth,0, this.weaponImgWidth , this.weaponImgHeight,
-						0,0,this.weaponImgWidth , this.weaponImgHeight );
-			context.translate( -ox , -oy );
-		}
+		this.renderWeapon(context);
 
 		context.drawImage(this.img, 0,0, this.imgWidth ,this.imgHeight,
 						0,0,this.imgWidth ,this.imgHeight);
@@ -202,6 +204,18 @@ Person.prototype={
 		// this.power
 		context.fillStyle=this.state==1?"red":(this.power==100?"blue":"green");
 		context.fillRect(500,50, this.power, 10);
+	},
+
+	renderWeapon : function(context){
+
+		if (this.state==1){
+			var ox=35, oy=30;
+			context.translate( ox , oy );
+			context.drawImage(this.img, this.imgWidth,0, this.weaponImgWidth , this.weaponImgHeight,
+						0,0,this.weaponImgWidth , this.weaponImgHeight );
+			context.translate( -ox , -oy );
+		}
+
 	}
 
 }

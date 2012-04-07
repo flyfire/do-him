@@ -215,9 +215,12 @@ var game=scope.game=new DH.Game({
 				context.save();
 
 				this.player.view.drawPath(context);
-				context.clip();
+
+				// context.clip();
 				
-				this.drawBG(context);				
+				this.drawBG(context);	
+
+				context.stroke();			
 
 				context.restore();
 
@@ -225,6 +228,8 @@ var game=scope.game=new DH.Game({
 			},
 
 			handleInput : function(deltaTime){
+
+				this.player.walk=false;
 
 				if (joystick.moveDistance>=10){
 					
@@ -234,10 +239,48 @@ var game=scope.game=new DH.Game({
 
 					this.player.setRotation(r);
 					
-				}else{
+					return;
 
-					this.player.walk=false;
 				}
+
+				var up=DH.KeyState[DH.Key.W]||DH.KeyState[DH.Key.UP];
+				var down=DH.KeyState[DH.Key.S]||DH.KeyState[DH.Key.DOWN];
+				var left=DH.KeyState[DH.Key.A]||DH.KeyState[DH.Key.LEFT];
+				var right=DH.KeyState[DH.Key.D]||DH.KeyState[DH.Key.RIGHT];
+				var gan=DH.KeyState[DH.Key.J]
+				
+				var speedY=0,speedX=0;
+				if (up && !down){
+					speedY=-1;
+				}else if (down && !up){
+					speedY=1;	
+				}else{
+					speedY=0;	
+				}			
+
+				if (left && !right){
+					speedX=-1;
+				}else if (right && !left){
+					speedX=1;
+				}else{
+					speedX=0;	
+				}
+
+				if (speedX||speedY){
+					this.player.walk=true;
+
+					dx=speedX;
+					dy=speedY;
+
+					var rad=Math.atan2(dy, dx);	
+					var deg=rad*DH.CONST.RAD_TO_DEG;
+					this.player.setRotation(deg);
+				}
+
+				if (gan){
+					this.player.rage();
+				}
+
 
 			}
 		});
