@@ -1,5 +1,6 @@
 var GameUtil ={
-		collideEachOther : function(sprites, gridCol, gridSize) {	
+
+		collideAABB : function(sprites, gridCol, gridSize) {	
 			
 			var grid = {};
 		    for( var s = 0; s < sprites.length; s++ ) {
@@ -25,7 +26,7 @@ var GameUtil ={
 							for( var c = 0, len=group.length; c<len; c++ ) {
 								var spriteB=group[c];
 								if( !checked[spriteB.id] 
-									&& spriteA.inView(spriteB.x,spriteB.y)  ) {
+									&& spriteA.inAABB(spriteB.x,spriteB.y)  ) {
 									spriteA.personList.push([
 											spriteB.id,
 											spriteB.x,

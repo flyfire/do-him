@@ -142,9 +142,10 @@ Person.prototype={
 		return this.AABB;
 	},
 
-	inAABB : function(px,py){
+	inAABB : function(x,y){
+		// var x=sprite.x , y=sprite.y;
 		var aabb=this.AABB;
-		return px>aabb[0] && py>aabb[1] && px<aabb[2] && py<aabb[3] ;
+		return x>aabb[0] && y>aabb[1] && x<aabb[2] && y<aabb[3] ;
 	},
 
 	updateAABB : function(){
