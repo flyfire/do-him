@@ -106,7 +106,6 @@ var game=scope.game=new DH.Game({
 	},
 	onInit : function(){
 		
-		this.timeBar=$$('.time');
 		this.curScoreBar=$$('.cur-score');
 		this.hiScoreBar=$$('.hi-score');
 
@@ -167,7 +166,6 @@ var game=scope.game=new DH.Game({
 
 			beforeRun : function(){
 				this.game.stopgame=false;
-				$css($$('.time'), 'display', 'block');
 				$css($$('.cur-score'), 'display', 'block');
 				$css($$('.hi-score'), 'display', 'block');
 
