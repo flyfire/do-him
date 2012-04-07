@@ -183,11 +183,24 @@ var game=scope.game=new DH.Game({
 				
 				this.map.render( context );
 
+				this.personList=[
+					[12,300,300,90,true]
+				];
+				var share=this.personShare;
 				for (var i=this.personList.length-1;i>=0;i--){
 					var p=this.personList[i];
-					var id=p[0];
-					var x=p[1];
-					var y=p[2];
+
+					share.id=p[0];
+					share.x=p[1];
+					share.y=p[2];
+					share.rotation=p[3];
+					share.state=p[4];
+
+					share.mapX=this.player.mapX;
+					share.mapY=this.player.mapY;
+
+					share.render( context );
+
 				}
 
 			},

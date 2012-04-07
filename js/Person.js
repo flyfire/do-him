@@ -37,7 +37,7 @@ Person.prototype={
 
 	img : null ,
 
-	raging : false ,
+	state : 0 ,
 
 	imgWidth : 48 ,
 	imgHeight : 80 ,
@@ -71,16 +71,16 @@ Person.prototype={
 	},
 	rage : function(){
 		if (this.power==100){
-			this.raging=true;
+			this.state=1;
 		}
 	},
 
 	update : function(deltaTime ){
-		if (this.raging){
+		if (this.state==1){
 			this.power-=this.powerSpeed;
 			if (this.power<=0){
 				this.power=0;
-				this.raging=false;
+				this.state=0;
 			}
 		}else{
 			if (this.power<100){
@@ -93,8 +93,9 @@ Person.prototype={
 		if (!this.walk){
 			return
 		}
-		var speedR=this.speedR*(this.raging?1.5:1);
-		var speed=this.speed*(this.raging?1.5:1);
+
+		var speedR=this.speedR*(this.state==1?1.5:1);
+		var speed=this.speed*(this.state==1?1.5:1);
 
 		this.rotation=(this.rotation+360)%360;
 		this.rotationD=(this.rotationD+360)%360;
@@ -137,6 +138,10 @@ Person.prototype={
 
 	},
 
+	getAABB : function(){
+		return this.AABB;
+	},
+
 	inAABB : function(px,py){
 		var aabb=this.AABB;
 		return px>aabb[0] && py>aabb[1] && px<aabb[2] && py<aabb[3] ;
@@ -173,7 +178,7 @@ Person.prototype={
 
 		context.translate( -this.baseX , -this.baseY );
 
-		if (this.raging){
+		if (this.state==1){
 			var ox=35, oy=30;
 			context.translate( ox , oy );
 			context.drawImage(this.img, this.imgWidth,0, this.weaponImgWidth , this.weaponImgHeight,
@@ -194,7 +199,7 @@ Person.prototype={
 		context.strokeRect(x,y,w,h);
 
 		// this.power
-		context.fillStyle=this.raging?"red":(this.power==100?"blue":"green");
+		context.fillStyle=this.state==1?"red":(this.power==100?"blue":"green");
 		context.fillRect(500,50, this.power, 10);
 	}
 
@@ -212,6 +217,12 @@ PersonShare.prototype={
 
 	constructor : PersonShare ,
 	id : null ,
+	x : 0,
+	y : 0,
+	rotation : 0,
+	state : 0 ,
+
+
 	img : null,
 	baseX : 0,
 	baseY : 0,
@@ -221,11 +232,6 @@ PersonShare.prototype={
 
 	weaponImgWidth : 56 ,
 	weaponImgHeight : 24 ,
-	
-	x : 0,
-	y : 0,
-	rotation : 0,
-	raging : false ,
 
 
 	mapX : 0,
@@ -244,7 +250,7 @@ PersonShare.prototype={
 
 		context.translate( -this.baseX , -this.baseY );
 
-		if (this.raging){
+		if (this.state==1){
 			var ox=35, oy=30;
 			context.translate( ox , oy );
 			context.drawImage(this.img, this.imgWidth,0, this.weaponImgWidth , this.weaponImgHeight,
@@ -261,4 +267,9 @@ PersonShare.prototype={
 	}
 
 }
+
+exports.Person=Person;
+exports.PersonShare=PersonShare;
+
+
 
