@@ -29,6 +29,7 @@ var game=scope.game=new DH.Game({
 	resList : [
 		{ id : "player" , url : "./res/person.png" },
 		{ id : "flower" , url : "./res/flower.png" },
+		{ id : "milk" , url : "./res/milk.png" },
 		{ id : "tiles" , url : "./res/tiles.png" }
 	],
 
@@ -195,7 +196,8 @@ var game=scope.game=new DH.Game({
 				});	
 
 				this.flowerImg=this.game.getRes("flower");
-				this.flowerList=[];
+				this.milkImg=this.game.getRes("milk");
+				this.itemList=[];
 
 				var flower=new Flower({
 					x : 200,
@@ -203,8 +205,15 @@ var game=scope.game=new DH.Game({
 					img : this.flowerImg
 				});
 				flower.init();
+				var milk=new Milk({
+					x : this.game.width/2,
+					y : this.game.height/2,
+					img : this.milkImg
+				});
+				milk.init();
 
-				this.flowerList.push(flower);
+				// this.itemList.push(flower);
+				this.itemList.push(milk);
 			},
 
 
@@ -213,12 +222,12 @@ var game=scope.game=new DH.Game({
 				this.player.update(deltaTime);
 				this.map.update(deltaTime);
 
-				for (var i=this.flowerList.length-1;i>=0;i--){
-					var f=this.flowerList[i];
+				for (var i=this.itemList.length-1;i>=0;i--){
+					var f=this.itemList[i];
 					f.update(deltaTime);
 					if (f.alpha==0){
 						f.img=null;
-						this.flowerList.splice(i,1);
+						this.itemList.splice(i,1);
 					}
 				}
 				
@@ -234,7 +243,7 @@ var game=scope.game=new DH.Game({
 				this.player.renderWeapon(context);
 
 				this.player.personList=[
-					[12,"npc_1",300,300,90,true]
+					[12,"npc_1",270,330,90,true]
 				];
 				var share=this.personShare;
 
@@ -245,6 +254,10 @@ var game=scope.game=new DH.Game({
 				// 			window.taskAdded=false;
 				// 		},1000)
 				// }
+				var Me=this;
+				// this.game.timer.addTask(function(){
+				// 		Me.showMilk=true;
+				// 		},1000);
 						
 				for (var i=this.player.personList.length-1;i>=0;i--){
 					var p=this.player.personList[i];
@@ -287,9 +300,14 @@ var game=scope.game=new DH.Game({
 				context.restore();
 
 				this.player.render( context );
-				for (var i=this.flowerList.length-1;i>=0;i--){
-					var f=this.flowerList[i];
+				for (var i=this.itemList.length-1;i>=0;i--){
+					var f=this.itemList[i];
 					f.render(context,this.map.x,this.map.y);
+				}
+
+				if (this.showMilk){
+
+				context.drawImage(this.milkImg,10,10);
 				}
 			},
 

@@ -49,17 +49,17 @@ var proto={
 		context.restore();
 
 
-		drawPoly(context,this.bodyBox,this.map.x,this.map.y);
-		context.strokeStyle="red";
-		drawPoly(context,this.bodyLine,this.map.x,this.map.y);
-		drawPoly(context,this.weaponBox,this.map.x,this.map.y);
-		context.strokeStyle="black";
+		// drawPoly(context,this.bodyBox,this.map.x,this.map.y);
+		// context.strokeStyle="red";
+		// drawPoly(context,this.bodyLine,this.map.x,this.map.y);
+		// drawPoly(context,this.weaponBox,this.map.x,this.map.y);
+		// context.strokeStyle="black";
 
-		var x=this.AABB[0]-this.map.x;
-		var y=this.AABB[1]-this.map.y;
-		var w=this.AABB[2]-this.AABB[0];
-		var h=this.AABB[3]-this.AABB[1];
-		context.strokeRect(x,y,w,h);
+		// var x=this.AABB[0]-this.map.x;
+		// var y=this.AABB[1]-this.map.y;
+		// var w=this.AABB[2]-this.AABB[0];
+		// var h=this.AABB[3]-this.AABB[1];
+		// context.strokeRect(x,y,w,h);
 
 		
 		this.renderName(context);
@@ -128,6 +128,7 @@ var Flower = function(cfg){
 	}
 
 };
+
 Flower.prototype={
 
 	constructor : Flower ,
@@ -165,6 +166,45 @@ Flower.prototype={
 		context.restore();
 		context.globalAlpha=1;
 	}
+}
+
+
+var Milk = function(cfg){	
+
+	for (var property in cfg ){
+		this[property]=cfg[property];
+	}
+
+};
+
+Milk.prototype={
+
+	constructor : Milk ,
+	x : 0,
+	y : 0,
+	alpha : 1 ,
+	scale : 0.1 ,
+
+	img : null,
+
+	init : function(){
+		this.baseX=this.img.width/2;
+		this.baseY=this.img.height/2;
+	},
+
+	update : function(deltaTime){
+
+		this.scale+=deltaTime*0.01;
+		this.scale=Math.min(1,this.scale);
+	
+		if (this.scale==1){
+			//this.alpha-=deltaTime*0.0004;
+		}
+		this.alpha=Math.max(0,this.alpha);
+
+	},
+
+	render : Flower.prototype.render
 }
 
 var PersonShare=function(cfg){	

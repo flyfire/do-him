@@ -41,6 +41,8 @@ Person.prototype={
 	power : 100 ,
 	powerSpeed : 0.4,
 
+	doNum : 0,
+	beDidNum : 0 ,
 
 	init : function(){
 
@@ -216,6 +218,8 @@ Person.prototype={
 			var rs= DH.checkPolyCollide(this.weaponBox ,sprite.bodyLine );
 			if (rs){
 				sprite.state=2;
+				this.doNum++;
+				sprite.beDidNum++;
 			}
 			return rs;
 		}
