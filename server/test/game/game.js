@@ -70,7 +70,8 @@ game.update = function(step)
         var evt = game.event_list[i];
         player_manager.receive_event(step, evt);
     }
-   
+    //更新所有角色
+    player_manager.update(stpe);
     // 更新场景
     scene.fresh(step, player_manager);
     // 反馈消息

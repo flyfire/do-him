@@ -1,7 +1,7 @@
 
 var util = require("util"),
     ws = require("../../lib/ws/server"),
-    game = require("./Game").root;
+    game = require("./game").root;
 var time = 0;
 //创建WebSocket Server
 var server = ws.createServer({
