@@ -37,7 +37,7 @@ Person.prototype={
 
 	state : 0 ,
 	want2Rage : false ,
-	
+
 	power : 100 ,
 	powerSpeed : 0.4,
 
@@ -57,7 +57,7 @@ Person.prototype={
 		];
 
 		var x=this.x;
-		var y=this.y-10;
+		var y=this.y-6;
 		var w=64;
 		var h=22;
 

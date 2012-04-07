@@ -17,7 +17,7 @@ Map.prototype={
 	x : 0,
 	y : 0,
 
-	tileSize : 32 ,
+	tileSize : 128 ,
 
 	width : 2000,
 	height : 2000,

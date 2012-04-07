@@ -6,11 +6,18 @@
 var proto={
 
 	img : null ,
-	imgWidth : 48 ,
-	imgHeight : 80 ,
+	imgWidth : 60 ,
+	imgHeight : 90 ,
 	weaponImgWidth : 56 ,
-	weaponImgHeight : 24 ,
+	weaponImgHeight : 26 ,
 
+	anim : [
+		[0,0],
+		[60,0],
+		[0,0],
+		[120,0]		
+	],
+	_frameDisplayed : 0,
 	render : function(context){
 		
 		context.save();
@@ -25,7 +32,16 @@ var proto={
 
 		this.renderWeapon(context);
 
-		context.drawImage(this.img, 0,0, this.imgWidth ,this.imgHeight,
+		var idx=0;
+		if (this.walk){
+			this._frameDisplayed++;
+			idx=Math.floor( (this._frameDisplayed/5) % 4);
+		}
+
+		
+		var xy=this.anim[ idx  ];
+		console.log(xy)
+		context.drawImage(this.img, xy[0],xy[1], this.imgWidth ,this.imgHeight,
 						0,0,this.imgWidth ,this.imgHeight);
 				
 	
@@ -59,9 +75,9 @@ var proto={
 	renderWeapon : function(context){
 
 		if (this.state==1){
-			var ox=35, oy=30;
+			var ox=35, oy=33;
 			context.translate( ox , oy );
-			context.drawImage(this.img, this.imgWidth,0, this.weaponImgWidth , this.weaponImgHeight,
+			context.drawImage(this.img, 0, this.imgHeight, this.weaponImgWidth , this.weaponImgHeight,
 						0,0,this.weaponImgWidth , this.weaponImgHeight );
 			context.translate( -ox , -oy );
 		}
