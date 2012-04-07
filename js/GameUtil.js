@@ -1,4 +1,32 @@
+
 var GameUtil ={
+
+	translatePoly : function(poly,x,y){
+		var len=poly.length;
+		for(var i = 0; i < len; i++){
+			poly[i][0]+=x;
+			poly[i][1]+=y;
+		}
+		return poly;
+	},
+
+	rotatePoly : function(poly,deg,cx,cy){
+		var rad=deg*DH.CONST.DEG_TO_RAD;
+		var cos=Math.cos(rad), sin=Math.sin(rad);
+		cx=cx||0;
+		cy=cy||0;
+		var len=poly.length;
+		for(var i = 0; i < len; i++){
+			var p=poly[i];
+			var px=p[0]-cx, py=p[1]-cy;
+			var x= px*cos- py*sin;
+			var y= px*sin+ py*cos;
+			p[0]=x+cx;
+			p[1]=y+cy;
+		}
+		return poly;
+	},
+
 
 		collideAABB : function(sprites, gridCol, gridSize) {	
 			

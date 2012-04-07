@@ -124,26 +124,16 @@ var game=scope.game=new DH.Game({
 				$css($$('.hi-score'), 'display', 'block');
 
 				this.personList=[];
-				this.createMap();
-				this.createPlayer();
-			},
-			addEntity : function(entity){
-				
-				// this.scene.add( entity.core );
-
+				this.createEntity();
 			},
 
-			createMap : function(){
+			createEntity : function(){
 				this.map=new Map({
 					x : 0,
 					y : 0,
 					game : this.game ,
 					img : this.game.getRes("tiles")
-				})
-				this.map.init();
-			},
-
-			createPlayer : function(){
+				});
 
 				this.player=new Person({
 					x : 100,
@@ -151,7 +141,12 @@ var game=scope.game=new DH.Game({
 					img : this.game.getRes("player")
 
 				});
+		
 
+				this.map.player=this.player;
+				this.map.init();
+
+				this.player.map=this.map;
 				this.player.init();
 
 				this.personShare=new PersonShare({
@@ -162,11 +157,8 @@ var game=scope.game=new DH.Game({
 					imgHeight : this.player.imgHeight ,
 					weaponImgWidth : this.player.weaponImgWidth ,
 					weaponImgHeight : this.player.weaponImgHeight ,
-				});
-			},
-
-			createEntity : function( type , z ) {
-
+					map : this.map 
+				});	
 			},
 
 
@@ -196,8 +188,7 @@ var game=scope.game=new DH.Game({
 					share.rotation=p[3];
 					share.state=p[4];
 
-					share.mapX=this.player.mapX;
-					share.mapY=this.player.mapY;
+					
 
 					share.render( context );
 
@@ -207,6 +198,8 @@ var game=scope.game=new DH.Game({
 
 			render : function(deltaTime){
 				
+				var map=this.map;
+
 				var context=this.game.context;
 				
 				context.clearRect(0,0,this.game.width,this.game.height);
@@ -214,7 +207,7 @@ var game=scope.game=new DH.Game({
 
 				context.save();
 
-				this.player.view.drawPath(context);
+				this.player.view.drawPath(context,-this.map.x,-this.map.y);
 
 				// context.clip();
 				

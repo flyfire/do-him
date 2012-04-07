@@ -40,38 +40,25 @@ ViewField.prototype={
 	},
 
 	rotate : function(dr){
-
-		
+	
 		var poly=this.poly;
-		var len=poly.length;
-
-		var rad=dr*DH.CONST.DEG_TO_RAD;
-		var cos=Math.cos(rad), sin=Math.sin(rad);
-
 		var cx=poly[0][0],
 			cy=poly[0][1];
-		for(var i = 1; i < len; i++){
-			var p=poly[i];
-			var px=p[0]-cx, py=p[1]-cy;
-			var x= px*cos- py*sin;
-			var y= px*sin+ py*cos;
-			p[0]=x+cx;
-			p[1]=y+cy;
-		}
+		GameUtil.rotatePoly(poly,dr,cx,cy);
+
 	},
 
-	drawPath : function(context){
+	drawPath : function(context,ox,oy){
+
 		var poly=this.poly;
 		context.beginPath();
 
-		context.moveTo( poly[0][0] ,poly[0][1]);
-		for (var i=1,len=poly.length;i<len;i++){
-			context.lineTo( poly[i][0] ,poly[i][1] );
-		}
-		context.lineTo( poly[0][0] ,poly[0][1]);
+		context.moveTo( poly[0][0]+ox ,poly[0][1]+oy );
+		context.lineTo( poly[1][0]+ox ,poly[1][1]+oy );
+		context.lineTo( poly[2][0]+ox ,poly[2][1]+oy );
+		context.lineTo( poly[0][0]+ox ,poly[0][1]+oy );
 
-		context.closePath();
-		
+		context.closePath();	
 
 	}
 

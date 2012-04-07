@@ -32,9 +32,6 @@ Person.prototype={
 
 	view : null ,
 
-	mapX : 0,
-	mapY : 0,
-
 	img : null ,
 
 	raging : false ,

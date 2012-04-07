@@ -271,6 +271,21 @@
 })(this);
 
 
+function drawPoly(context,poly,ox,oy){
+	ox=ox||0;
+	oy=oy||0;
+	context.beginPath();
+	context.moveTo( poly[0][0]+ox ,poly[0][1]+oy );
+	for (var i=1,len=poly.length;i<len;i++){
+		context.lineTo( poly[i][0]+ox ,poly[i][1]+oy );
+	}
+	context.lineTo( poly[0][0]+ox ,poly[0][1]+oy );
+	context.closePath();
+
+	context.stroke();
+
+	// context.strokeStyle=bak;	
+}
 
 
 function setDomPos(dom,x,y){

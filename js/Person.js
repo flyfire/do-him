@@ -31,9 +31,6 @@ Person.prototype={
 
 	view : null ,
 
-	mapX : 0,
-	mapY : 0,
-
 	img : null ,
 
 	state : 0 ,
@@ -50,13 +47,33 @@ Person.prototype={
 
 	init : function(){
 
-		this.bodyBox=[
-			[],
-			[],
-			[],
-			[]
+		var x=this.x-18;
+		var y=this.y-25;
+		var w=15;
+		var h=50;
 
-		],
+		this.bodyBox=[
+			[ x,y],
+			[ x+w,y],
+			[ x+w,y+h],
+			[ x,y+h]
+		];
+
+		var x=this.x;
+		var y=this.y-10;
+		var w=64;
+		var h=22;
+
+		this.weaponBox=[
+			[ x,y],
+			[ x+w,y],
+			[ x+w,y+h],
+			[ x,y+h]
+		];
+
+		this.bodyLine=[];
+
+
 
 		this.view=new ViewField({
 			person : this
@@ -90,6 +107,8 @@ Person.prototype={
 				this.power=0;
 				this.state=0;
 			}
+
+
 		}else{
 			if (this.power<100){
 				this.power+=this.powerSpeed;
@@ -113,7 +132,7 @@ Person.prototype={
 
 		if (Math.abs(dr)<=speedR || Math.abs(dr)>=360-speedR){
 			this.rotation=this.rotationD;
-			this.view.rotate(dr);
+			deltaR=dr;
 		}else{
 			
 			if (0<dr && dr<180){
@@ -126,22 +145,52 @@ Person.prototype={
 				deltaR=speedR;
 			}
 			this.rotation+=deltaR;
-			this.view.rotate(deltaR);
 		}
 
 		var rad=this.rotationD*DH.CONST.DEG_TO_RAD;
 		var speedX=speed*Math.cos(rad);
 		var speedY=speed*Math.sin(rad);
 
+		var changed=false;
 		if (speedX ||speedY) {
+			changed=true;
+			this.lastX=this.x;
+			this.lastY=this.y;
 			this.x+=speedX;
 			this.y+=speedY;
+
+			if (this.x<-2){
+				this.x=this.map.width-2;
+				speedX=this.x-this.lastX;
+			}else if (this.x>this.map.width+2){
+				this.x=2;
+				speedX=this.x-this.lastX;
+			}
+			if (this.y<-2){
+				this.y=this.map.height-2;
+				speedY=this.y-this.lastY;
+			}else if (this.y>this.map.height+2){
+				this.y=2;
+				speedY=this.y-this.lastY;
+			}
+
 			this.view.move(speedX,speedY);
+			GameUtil.translatePoly(this.bodyBox,speedX,speedY);
+			GameUtil.translatePoly(this.weaponBox,speedX,speedY);
 		}
 
-		this.updateAABB();
+		if (deltaR){
+			changed=true;
+			this.view.rotate(deltaR);		
+			GameUtil.rotatePoly(this.bodyBox,deltaR,this.x,this.y);
+			GameUtil.rotatePoly(this.weaponBox,deltaR,this.x,this.y);
 
+		}
 
+		if (changed){
+			this.updateAABB();	
+		}
+		
 
 	},
 
@@ -173,14 +222,18 @@ Person.prototype={
 		aabb[2]=maxX+ext;
 		aabb[3]=maxY+ext;
 
+		this.bodyLine[0]=this.bodyBox[1];
+		this.bodyLine[1]=this.bodyBox[2];
+			
+
 	},
 
 	render : function(context){
 		
 		context.save();
 
-		var x=this.x-this.mapX;
-		var y=this.y-this.mapY;
+		var x=this.x-this.map.x;
+		var y=this.y-this.map.y;
 
 		context.translate( x , y );
 		context.rotate( this.rotation*DH.CONST.DEG_TO_RAD );
@@ -192,11 +245,18 @@ Person.prototype={
 		context.drawImage(this.img, 0,0, this.imgWidth ,this.imgHeight,
 						0,0,this.imgWidth ,this.imgHeight);
 				
-
+	
 		context.restore();
 
-		var x=this.AABB[0]-this.mapX;
-		var y=this.AABB[1]-this.mapY;
+
+		drawPoly(context,this.bodyBox,-this.map.x,-this.map.y);
+		context.strokeStyle="red";
+		drawPoly(context,this.bodyLine,-this.map.x,-this.map.y);
+		drawPoly(context,this.weaponBox,-this.map.x,-this.map.y);
+		context.strokeStyle="black";
+
+		var x=this.AABB[0]-this.map.x;
+		var y=this.AABB[1]-this.map.y;
 		var w=this.AABB[2]-this.AABB[0];
 		var h=this.AABB[3]-this.AABB[1];
 		context.strokeRect(x,y,w,h);
@@ -249,16 +309,13 @@ PersonShare.prototype={
 	weaponImgHeight : 24 ,
 
 
-	mapX : 0,
-	mapY : 0,
-
 
 	render : function(context){
 		
 		context.save();
 
-		var x=this.x-this.mapX;
-		var y=this.y-this.mapY;
+		var x=this.x-this.map.x;
+		var y=this.y-this.map.y;
 
 		context.translate( x , y );
 		context.rotate( this.rotation*DH.CONST.DEG_TO_RAD );
