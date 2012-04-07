@@ -23,18 +23,20 @@ GameCore.prototype={
 
 	server : null ,
 	init : function(game){
+		this.game=game;
 		this.personList=[];
 		this.personMap={};
 		this.personNameCache={};
-		this.game=game;
 	},
 
 	addPerson : function(cfg){
+		cfg.name=this.checkName(cfg.name);
 		var person=new Person(cfg);
 		this.personList.push(person);
 		this.personMap[cfg.id]=person;
 		this.personNameCache[cfg.name]=person;
 
+		var resized=this.resizeMap();
 	},
 
 	removePerson : function(id){
@@ -50,12 +52,13 @@ GameCore.prototype={
 			delete this.personMap[id];
 			delete this.personNameCache[person.name];
 		}
-		return person;
+
+		var resized=this.resizeMap();
 	},
 
 	checkName : function(name){
 		var i=1;
-		var oName=name;
+		var oName=name+"";
 		while( this.personNameCache[name] ){
 			i++;
 			name=oName+"_"+i;
@@ -188,13 +191,18 @@ GameCore.prototype={
 
 	},
 
+	personArea : 1200 * 1200 ,
+	resizeMap : function(){
+		
+		var ts= this.personArea * this.personList.length;
+		var ns=Math.ceil( Math.sqrt(ts) ) ;
+		if (this.map.width!=ns){
+			this.map.width=this.map.height=s;
+			return true;
+		}
+		return false;
+	},	
 
-	extendMap : function(){
-
-	},
-	shrinkMap : function(){
-
-	},
 
 	getRandomPos : function(){
 		return [
