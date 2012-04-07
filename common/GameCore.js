@@ -19,11 +19,14 @@ GameCore.prototype={
 	personNameCache : null,
 
 	map : null,
+	game : null ,
+
 	server : null ,
-	init : function(){
+	init : function(game){
 		this.personList=[];
 		this.personMap={};
 		this.personNameCache={};
+		this.game=game;
 	},
 
 	addPerson : function(cfg){
