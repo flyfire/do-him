@@ -33,7 +33,7 @@ GameCore.prototype={
 		this.personNameCache[cfg.name]=person;
 
 	},
-	
+
 	removePerson : function(id){
 		var person=this.personMap[id];
 		if (person){
@@ -128,6 +128,8 @@ GameCore.prototype={
 					p.rotation,
 					p.state,
 					p.power,
+					p.doNum,
+					p.beDidNum,
 					p.personList
 				];
 
