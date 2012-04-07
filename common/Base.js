@@ -5,6 +5,20 @@
 	var DH=scope.DH=scope.DH||{};
 	
 	DH.CONST={};
+
+DH.CONST.DEG_TO_RAD=Math.PI/180;
+DH.CONST.RAD_TO_DEG=180/Math.PI;
+DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
+
+DH.CONST.CMD={
+	login : "in",
+	leave : "l",
+	sync : "s",
+	info : "i",
+	update : "u",
+	err : "e"
+};
+
 	DH._TODO_=function(){};
 	
 	DH.alias=function(name){
@@ -102,7 +116,76 @@
 				p[1]=y+cy;
 			}
 			return poly;
+		},
+
+	normalLine : function(line) {
+		var p1=line[0], p2=line[1];
+
+		var nx = p2[1] - p1[1];
+		var ny = p1[0] - p2[0];
+
+		var np=nx*p1[0]+ny*p1[1];
+		
+		return [nx, ny , np ];
+	},
+
+checkPolyCollide : function (poly1, poly2 ) {
+	var len1 = poly1.length,
+		len2 = poly2.length;
+
+	var p,q,v;
+
+	var second=false;
+	do{
+		p=poly1[len1 - 1];
+		var px = p[0];
+		var py = p[1];
+		for (var i = 0; i < len1; i++) {
+			q=poly1[i];
+			var qx = q[0];
+			var qy = q[1];
+			var nx = qy - py;
+			var ny = px - qx;
+
+
+			var NdotP = nx * px + ny * py;
+			var allOutside = true;
+			for (var j = 0; j < len2; j++) {
+				v=poly2[j];
+				var vx = v[0];
+				var vy = v[1];
+				var det = nx * vx + ny * vy - NdotP;
+				if (det<0) {
+					allOutside = false;
+					break;
+				}
+			}
+
+			if (allOutside){
+				return false;
+			}
+
+			px = qx;
+			py = qy;
 		}
+		if (len2<2){
+			return true;
+		}
+		if (second){
+			break;
+		}
+		second=true;
+
+		len1=len1^len2;
+		len2=len1^len2;
+		len1=len1^len2;
+		var _t=poly1;
+		poly1=poly2;
+		poly2=_t;
+	}while(true);
+
+	return true;
+}
 
 	});
 

@@ -27,15 +27,15 @@ Person.prototype={
 	speedR : 6,
 
 	baseX : 25,
-	baseY : 40,
+	baseY : 45,
 	walk : false ,
 
 	bodyBox : null,
 	AABB : null,
 
-	view : null ,
+	// view : null ,
 
-	state : 0 ,
+	state : 0 ,  // 0 : normal , 1 : raging , 2 : dead 
 	want2Rage : false ,
 
 	power : 100 ,
@@ -44,8 +44,18 @@ Person.prototype={
 
 	init : function(){
 
+		var length=250;
+		var width=250;
+		var minWidth=40;
+		this.viewPoly=[
+			[this.x,this.y-minWidth/2],
+			[this.x+length,this.y-minWidth/2-width/2],
+			[this.x+length,this.y+minWidth/2+width/2],
+			[this.x,this.y+minWidth/2]
+		]
+
 		var x=this.x-18;
-		var y=this.y-25;
+		var y=this.y-24;
 		var w=15;
 		var h=50;
 
@@ -57,9 +67,9 @@ Person.prototype={
 		];
 
 		var x=this.x;
-		var y=this.y-6;
-		var w=64;
-		var h=22;
+		var y=this.y-10;
+		var w=48;
+		var h=21;
 
 		this.weaponBox=[
 			[ x,y],
@@ -70,13 +80,6 @@ Person.prototype={
 
 		this.bodyLine=[];
 
-
-
-		this.view=new ViewField({
-			person : this
-		});
-
-		this.view.init();
 		this.AABB=[];
 
 		this.updateAABB();
@@ -91,7 +94,7 @@ Person.prototype={
 
 	},
 	rage : function(){
-		if (this.power==100 && this.state!=1){
+		if (this.power==100 && this.state==0){
 			this.state=1;
 		}
 	},
@@ -104,9 +107,7 @@ Person.prototype={
 				this.power=0;
 				this.state=0;
 			}
-
-
-		}else{
+		}else if(this.state==0){
 			if (this.power<100){
 				this.power+=this.powerSpeed;
 			}else{
@@ -171,14 +172,14 @@ Person.prototype={
 				speedY=this.y-this.lastY;
 			}
 
-			this.view.move(speedX,speedY);
+			DH.translatePoly(this.viewPoly,speedX,speedY);
 			DH.translatePoly(this.bodyBox,speedX,speedY);
 			DH.translatePoly(this.weaponBox,speedX,speedY);
 		}
 
 		if (deltaR){
 			changed=true;
-			this.view.rotate(deltaR);		
+			DH.rotatePoly(this.viewPoly,deltaR,this.x,this.y);
 			DH.rotatePoly(this.bodyBox,deltaR,this.x,this.y);
 			DH.rotatePoly(this.weaponBox,deltaR,this.x,this.y);
 
@@ -201,14 +202,37 @@ Person.prototype={
 		return x>aabb[0] && y>aabb[1] && x<aabb[2] && y<aabb[3] ;
 	},
 
+	collideOther : function(sprite){
+
+		if (this.state!=1 || sprite.state==2 ){
+			return false;
+		}
+
+		var normal=DH.normalLine(this.bodyLine);
+		var nx=normal[0],ny=normal[1],np=normal[2];
+
+		var p1=sprite.bodyLine[0], p2=sprite.bodyLine[1];
+		if (nx*p1[0]+ny*p1[1]-np >= 0 && nx*p2[0]+ny*p2[1]-np >=0){
+			var rs= DH.checkPolyCollide(this.weaponBox ,sprite.bodyLine );
+			if (rs){
+				sprite.state=2;
+			}
+			return rs;
+		}
+
+		return false;
+	},
+
+
 	updateAABB : function(){
 
-		var poly=this.view.poly;
-		var minX=Math.min( poly[0][0],poly[1][0],poly[2][0]);
-		var maxX=Math.max( poly[0][0],poly[1][0],poly[2][0]);
+		var poly=this.viewPoly;
 
-		var minY=Math.min( poly[0][1],poly[1][1],poly[2][1]);
-		var maxY=Math.max( poly[0][1],poly[1][1],poly[2][1]);
+		var minX=Math.min( poly[0][0],poly[1][0],poly[2][0],poly[3][0]);
+		var maxX=Math.max( poly[0][0],poly[1][0],poly[2][0],poly[3][0]);
+
+		var minY=Math.min( poly[0][1],poly[1][1],poly[2][1],poly[3][1]);
+		var maxY=Math.max( poly[0][1],poly[1][1],poly[2][1],poly[3][1]);
 
 		var aabb=this.AABB;
 

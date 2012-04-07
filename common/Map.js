@@ -19,8 +19,8 @@ Map.prototype={
 
 	tileSize : 128 ,
 
-	width : 2000,
-	height : 2000,
+	width : 1200,
+	height : 1200,
 
 
 	init : function(){
@@ -47,11 +47,11 @@ Map.prototype={
 		if ( left < 300){
 			this.x=x-300;
 		}
-		if ( bottom < 200){
-			this.y=y-(this.viewHeight-200);
+		if ( bottom < 250){
+			this.y=y-(this.viewHeight-250);
 		}
-		if ( top < 200){
-			this.y=y-200;
+		if ( top < 250){
+			this.y=y-250;
 		}
 
 		var maxX=this.width-this.viewWidth;

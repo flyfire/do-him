@@ -7,17 +7,7 @@ var WIDTH = 800,
 
 var DH=scope.DH;
 
-DH.CONST.DEG_TO_RAD=Math.PI/180;
-DH.CONST.RAD_TO_DEG=180/Math.PI;
-DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
 
-DH.CONST.CMD={
-	login : "in",
-	leave : "l",
-	info : "i",
-	update : "u",
-	err : "e"
-};
 
 
 var FPS=30;
@@ -161,15 +151,11 @@ var game=scope.game=new DH.Game({
 				
 			},
 
-			// personList : [],
-			// enemyCache : [],
-
 			beforeRun : function(){
 				this.game.stopgame=false;
 				$css($$('.cur-score'), 'display', 'block');
 				$css($$('.hi-score'), 'display', 'block');
 
-				this.personList=[];
 				this.createEntity();
 			},
 
@@ -222,21 +208,25 @@ var game=scope.game=new DH.Game({
 				
 				this.map.render( context );
 
-				this.personList=[
+				this.player.renderWeapon(context);
+
+				this.player.personList=[
 					[12,"npc_1",300,300,90,true]
 				];
 				var share=this.personShare;
-				for (var i=this.personList.length-1;i>=0;i--){
-					var p=this.personList[i];
+				
+				for (var i=this.player.personList.length-1;i>=0;i--){
+					var p=this.player.personList[i];
+					if (p[5]==2){
 
-					share.id=p[0];
-					share.name=p[1];
-					share.x=p[2];
-					share.y=p[3];
-					share.rotation=p[4];
-					share.state=p[5];
-
-					
+					}else{
+						share.id=p[0];
+						share.name=p[1];
+						share.x=p[2];
+						share.y=p[3];
+						share.rotation=p[4];
+						share.state=p[5];						
+					}				
 
 					share.render( context );
 
@@ -255,9 +245,9 @@ var game=scope.game=new DH.Game({
 
 				context.save();
 
-				this.player.view.drawPath(context,this.map.x,this.map.y);
+				this.player.drawViewPath(context,this.map.x,this.map.y);
 
-				// context.clip();
+				context.clip();
 				
 				this.drawBG(context);	
 
@@ -290,7 +280,7 @@ var game=scope.game=new DH.Game({
 					var down=DH.KeyState[DH.Key.S]||DH.KeyState[DH.Key.DOWN];
 					var left=DH.KeyState[DH.Key.A]||DH.KeyState[DH.Key.LEFT];
 					var right=DH.KeyState[DH.Key.D]||DH.KeyState[DH.Key.RIGHT];
-					var rage=!!DH.KeyState[DH.Key.J];
+					
 
 					var speedY=0,speedX=0;
 					if (up && !down){
@@ -320,8 +310,12 @@ var game=scope.game=new DH.Game({
 						
 						changed=true;
 					}
-					this.player.want2Rage=rage;
+					
+				}
 
+				if (!this.player.want2Rage ){
+					var rage=!!DH.KeyState[DH.Key.J];
+					this.player.want2Rage=rage;
 				}
 
 				var infoStr="["+

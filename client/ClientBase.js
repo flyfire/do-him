@@ -3,7 +3,7 @@
 
 	var DH=scope.DH=scope.DH||{};
 	
-
+	DH.server=false;
 	DH.getDoc = function(){ return window.document; };
 	DH.getFragment = (function(){
 		var fragment = DH.getDoc().createDocumentFragment();

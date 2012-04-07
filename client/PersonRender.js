@@ -20,17 +20,19 @@ var proto={
 	_frameDisplayed : 0,
 	render : function(context){
 		
-		context.save();
+		
 
 		var x=this.x-this.map.x;
 		var y=this.y-this.map.y;
+
+		context.save();
 
 		context.translate( x , y );
 		context.rotate( this.rotation*DH.CONST.DEG_TO_RAD );
 
 		context.translate( -this.baseX , -this.baseY );
 
-		this.renderWeapon(context);
+		// this.renderWeapon(context);
 
 		var idx=0;
 		if (this.walk){
@@ -40,7 +42,6 @@ var proto={
 
 		
 		var xy=this.anim[ idx  ];
-		console.log(xy)
 		context.drawImage(this.img, xy[0],xy[1], this.imgWidth ,this.imgHeight,
 						0,0,this.imgWidth ,this.imgHeight);
 				
@@ -67,7 +68,21 @@ var proto={
 		context.fillStyle=this.state==1?"red":(this.power==100?"blue":"green");
 		context.fillRect(500,50, this.power, 10);
 	},
+	
+	drawViewPath : function(context,ox,oy){
 
+		var poly=this.viewPoly;
+		context.beginPath();
+
+		context.moveTo( poly[0][0]-ox ,poly[0][1]-oy );
+		context.lineTo( poly[1][0]-ox ,poly[1][1]-oy );
+		context.lineTo( poly[2][0]-ox ,poly[2][1]-oy );
+		context.lineTo( poly[3][0]-ox ,poly[3][1]-oy );
+		context.lineTo( poly[0][0]-ox ,poly[0][1]-oy );
+
+		context.closePath();	
+
+	},
 	renderName : function(context){
 		context.fillText(this.name,this.x-this.map.x-20,this.y-this.map.y-30);
 	},
@@ -75,11 +90,25 @@ var proto={
 	renderWeapon : function(context){
 
 		if (this.state==1){
-			var ox=35, oy=33;
+
+			var x=this.x-this.map.x;
+			var y=this.y-this.map.y;
+
+			context.save();
+
+			context.translate( x , y );
+			context.rotate( this.rotation*DH.CONST.DEG_TO_RAD );
+
+			context.translate( -this.baseX , -this.baseY );
+
+		
+			var ox=35, oy=34;
 			context.translate( ox , oy );
 			context.drawImage(this.img, 0, this.imgHeight, this.weaponImgWidth , this.weaponImgHeight,
 						0,0,this.weaponImgWidth , this.weaponImgHeight );
 			context.translate( -ox , -oy );
+
+			context.restore();
 		}
 
 	}
@@ -134,8 +163,13 @@ PersonShare.prototype={
 
 		context.translate( -this.baseX , -this.baseY );
 
-		this.renderWeapon(context);
-
+		if (this.state==1){
+			var ox=35, oy=34;
+			context.translate( ox , oy );
+			context.drawImage(this.img, 0, this.imgHeight, this.weaponImgWidth , this.weaponImgHeight,
+						0,0,this.weaponImgWidth , this.weaponImgHeight );
+			context.translate( -ox , -oy );
+		}
 
 		context.drawImage(this.img, 0,0, this.imgWidth ,this.imgHeight,
 						0,0,this.imgWidth ,this.imgHeight);
@@ -147,7 +181,6 @@ PersonShare.prototype={
 
 	},
 
-	renderWeapon : Person.prototype.renderWeapon,
 	renderName : Person.prototype.renderName
 
 }

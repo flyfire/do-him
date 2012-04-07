@@ -16,19 +16,24 @@ GameCore.prototype={
 
 	personList : null,
 	personMap : null ,
+	personNameCache : null,
 
 	map : null,
-
+	server : null ,
 	init : function(){
 		this.personList=[];
 		this.personMap={};
+		this.personNameCache={};
 	},
 
 	addPerson : function(cfg){
 		var person=new Person(cfg);
 		this.personList.push(person);
 		this.personMap[cfg.id]=person;
+		this.personNameCache[cfg.name]=person;
+
 	},
+	
 	removePerson : function(id){
 		var person=this.personMap[id];
 		if (person){
@@ -39,9 +44,20 @@ GameCore.prototype={
 					break;
 				}
 			}
-			delete this.personMap[id]
+			delete this.personMap[id];
+			delete this.personNameCache[person.name];
 		}
 		return person;
+	},
+
+	checkName : function(name){
+		var i=1;
+		var oName=name;
+		while( this.personNameCache[name] ){
+			i++;
+			name=oName+"_"+i;
+		}
+		return name;
 	},
 
 	setPersonMoveInfo : function(infoList){
@@ -55,33 +71,77 @@ GameCore.prototype={
 		}
 	},
 
+
 	updateAllPerson : function(deltaTime){
 		for (var i=this.personList.length-1;i>=0;i--){
 			var p=this.personList[i];
 			p.update(deltaTime);
+			if (p.state==2){
+				p.state=0;
+				p.rotation=0;
+				var pos=this.getRandomPos();
+				p.x=pos[0];
+				p.y=pos[1];
+				p.power=100;
+			}
 		}
-		this.checkAllPersonView();
+		this.checkAllPersonAABB();
 		this.collideAllPerson();
+		this.syncAllPerson();
 	},
+
 	collideAllPerson : function(){
 
+		var sprites=this.personList;
+	    for( var s = 0; s < sprites.length; s++ ) {
+			var spriteA = sprites[s];
+			var personList=spriteA.personList;
+
+			for (var i=personList.length-1;i>=0;i--){
+				var spriteB=personList[i];
+				var rs=spriteA.collideOther(spriteB);
+				personList[i]=[
+						spriteB.id,
+						spriteB.name,
+						spriteB.x,
+						spriteB.y,
+						spriteB.rotation,
+						spriteB.state
+					];
+			}
+		}
+
 	},
+
 
 	syncAllPerson : function(deltaTime){
 		for (var i=this.personList.length-1;i>=0;i--){
 			var p=this.personList[i];
 			
-			// cmd , id, name, x,y,rotation, state, power,
-			// 			 personList : id name x y rotation state 
+			if (this.server){
+				var info=[
+					DH.CONST.CMD.sync,
+					p.id,
+					p.name,
+					p.x,
+					p.y,
+					p.rotation,
+					p.state,
+					p.power,
+					p.personList
+				];
+
+				this.server.send(p.id , JSON.stringify(info) );
+			}
 		}
 		
 	},
 
-	checkAllPersonView : function(){
+	checkAllPersonAABB : function(){
 		var gridSize=200;
 		var gridCol=Math.ceil(this.map.width/gridSize);
 		var sprites=this.personList;
-		
+
 		var grid = {};
 	    for( var s = 0; s < sprites.length; s++ ) {
 			var spriteA = sprites[s];
@@ -107,13 +167,8 @@ GameCore.prototype={
 							var spriteB=group[c];
 							if( !checked[spriteB.id] 
 								&& spriteA.inAABB(spriteB.x,spriteB.y)  ) {
-								spriteA.personList.push([
-										spriteB.id,
-										spriteB.x,
-										spriteB.y,
-										spriteB.rotation,
-										spriteB.state
-									]);
+								spriteA.personList.push(spriteB);
+
 								checked[spriteB.id] = true;
 							}
 						}
@@ -124,7 +179,8 @@ GameCore.prototype={
 				startIdx+=gridCol;
 			}
 		}
-	
+		
+
 	},
 
 
@@ -136,7 +192,10 @@ GameCore.prototype={
 	},
 
 	getRandomPos : function(){
-
+		return [
+			DH.genRandom(5,this.map.width-5),
+			DH.genRandom(5,this.map.height-5)
+		]
 	},
 
 
