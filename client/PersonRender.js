@@ -64,9 +64,7 @@ var proto={
 		
 		this.renderName(context);
 
-		// this.power
-		context.fillStyle=this.state==1?"red":(this.power==100?"blue":"green");
-		context.fillRect(500,50, this.power, 10);
+	
 	},
 	
 	drawViewPath : function(context,ox,oy){

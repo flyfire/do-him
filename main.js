@@ -122,6 +122,7 @@ var game=scope.game=new DH.Game({
 		
 		this.doNumBar=$$('.cur-score em');
 		this.beDidNumBar=$$('.hi-score em');
+		this.powerBar=$id("power-bar");
 
 		DH.initEvent();
 
@@ -347,6 +348,12 @@ clear : function(){
 
 				this.game.doNumBar.innerHTML=this.player.doNum;
 				this.game.beDidNumBar.innerHTML=this.player.beDidNum;
+
+				var power=this.player.power;
+
+				var color=this.player.state==1?"red":(power==100?"blue":"green");
+				this.game.powerBar.style.backgroundColor=color;
+				this.game.powerBar.style.height=power+"px";
 			},
 
 			handleInput : function(deltaTime){
