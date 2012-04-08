@@ -84,6 +84,11 @@ var game=scope.game=new DH.Game({
 
 		    conn.onopen = function(){
 		      console.log("** you have been connected");
+
+		      conn.send( JSON.stringify([
+
+
+		      	] ) );
 		    }
 		     conn.onerror = function(){
 		      console.log("** you have error");
@@ -372,13 +377,17 @@ var game=scope.game=new DH.Game({
 				}
 
 				var infoStr="["+
-						'"'+DH.CONST.CMD.info+'",'+
+						'"'+DH.CONST.CMD.update+'",'+
 						 this.player.id +","+ 
 						 rotation +","+ 
 						 this.player.walk+","+ 
 						 this.player.want2Rage 
 						 +"]";
 				this.game.sendPersonInfo( infoStr );
+				// run at server :
+				//   this.player.walk=false;
+				//   return;
+				
 
 				if (this.player.want2Rage){
 					this.player.rage();

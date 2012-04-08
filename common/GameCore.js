@@ -147,7 +147,7 @@ GameCore.prototype={
 
 	checkAllPersonAABB : function(){
 		var gridSize=200;
-		var gridCol=Math.ceil(this.map.width/gridSize);
+		var gridCol=Math.ceil(this.mapWidth/gridSize);
 		var sprites=this.personList;
 
 		var grid = {};
@@ -196,8 +196,8 @@ GameCore.prototype={
 		
 		var ts= this.personArea * this.personList.length;
 		var ns=Math.ceil( Math.sqrt(ts) ) ;
-		if (this.map.width!=ns){
-			this.map.width=this.map.height=s;
+		if (this.mapWidth!=ns){
+			this.mapWidth=this.mapHeight=s;
 			return true;
 		}
 		return false;
@@ -206,8 +206,8 @@ GameCore.prototype={
 
 	getRandomPos : function(){
 		return [
-			DH.genRandom(5,this.map.width-5),
-			DH.genRandom(5,this.map.height-5)
+			DH.genRandom(5,this.mapWidth-5),
+			DH.genRandom(5,this.mapHeight-5)
 		]
 	},
 

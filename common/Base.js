@@ -14,9 +14,14 @@ DH.CONST.CMD={
 	login : "in",
 	leave : "l",
 	sync : "s",
-	info : "i",
 	update : "u",
 	err : "e"
+};
+
+DH.CONST.STATE={
+	normal : 0,
+	raging : 1,
+	dead : 2
 };
 
 	DH._TODO_=function(){};
