@@ -96,6 +96,8 @@ background-color : #ccccff;
 #stick2 {
 	background-color : #ffffff;
 	border : 1px solid #333333;
+	color : #ffffff;
+	font-size : 48px;
 	opacity: 0.3;
 }
 
