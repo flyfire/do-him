@@ -128,7 +128,7 @@ GameCore.prototype={
 		for (var i=this.personList.length-1;i>=0;i--){
 			var p=this.personList[i];
 			
-			if (this.server){
+			if (this.game.server){
 				var info=[
 					DH.CONST.CMD.sync,
 					p.id,
@@ -143,7 +143,7 @@ GameCore.prototype={
 					p.personList
 				];
 
-				this.server.send(p.id , JSON.stringify(info) );
+				this.game.server.send(p.id , JSON.stringify(info) );
 			}
 		}
 		
