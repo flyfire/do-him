@@ -111,19 +111,6 @@ Person.prototype={
 	},
 	syncInfo : function(info){
 
-					// p.id,
-					// p.name,
-					// p.x,
-					// p.y,
-					// p.rotation,
-					// p.state,
-					// p.power,
-					// p.doNum,
-					// p.beDidNum,
-					// p.enemyList,
-					// this.map.width,
-					// this.map.height
-
 		this.id=info[1];
 		this.name=info[2];
 		this.x=info[3];

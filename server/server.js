@@ -19,15 +19,20 @@ server.on("connection", function(conn){
   server.send(conn.id, JSON.stringify([DH.CONST.CMD.login, conn.id]) );
 
   conn.on("message", function(message){
-    var info = JSON.parse(message);
-    if(info[0] == DH.CONST.CMD.update)
-    {
-        game.updatePersonMoveInfo(info);
-    }else if(info[0] == DH.CONST.CMD.login)
-    {
-        info[1]=conn.id;
-        game.addPerson(info);
+    try{
+      var info = JSON.parse(message);
+      if(info[0] == DH.CONST.CMD.update)
+      {
+          game.updatePersonMoveInfo(info);
+      }else if(info[0] == DH.CONST.CMD.login)
+      {
+          info[1]=conn.id;
+          game.addPerson(info);
+      }
+    }catch(e){
+      util.log(message); 
     }
+
   });
 });
 
