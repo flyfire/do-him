@@ -45,8 +45,10 @@ game.callRun = function()
 }
 game.update = function(deltaTime)
 {
-    util.log("game update: " + deltaTime);
+   // util.log("game update: " + deltaTime);
     gameCore.updateAllPerson(deltaTime);
+    
+    
 }
 	
 game.run = function()
@@ -56,7 +58,7 @@ game.run = function()
     timer.tick();
     var deltaTime= timer.deltaTime;
     
-    util.log("game update: " + timer + deltaTime);
+  //  util.log("game update: " + timer + deltaTime);
     if( deltaTime>1 )
     {
         
