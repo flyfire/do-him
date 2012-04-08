@@ -476,8 +476,8 @@ var info;
 
 var soltRadius=60;
 var stickRadius=40;
-var stickX=60;
-var stickY=HEIGHT-180;
+var stickX=70;
+var stickY=HEIGHT-190;
 
 
 function initJoystick(){
