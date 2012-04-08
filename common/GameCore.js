@@ -110,6 +110,7 @@ GameCore.prototype={
 				p.x=pos[0];
 				p.y=pos[1];
 				p.power=100;
+				p.init();
 			}
 		}
 		this.checkAllPersonAABB();
