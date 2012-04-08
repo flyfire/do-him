@@ -14,7 +14,7 @@ DH.CONST.DEG_TO_RAD=Math.PI/180;
 DH.CONST.RAD_TO_DEG=180/Math.PI;
 DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
 DH.CONST.CMD={
-	login : "in",
+	login : "i",
 	leave : "l",
 	sync : "s",
 	update : "u",

@@ -1,6 +1,6 @@
 ﻿
-var WIDTH = 800,
-    HEIGHT = 500;
+var WIDTH = WIDTH||800,
+    HEIGHT = HEIGHT||500;
 
 
 ;(function(scope,undefined){
@@ -150,6 +150,13 @@ var game=scope.game=new DH.Game({
 
 	},
 
+clear : function(){
+
+	this.context.clearRect(0,0,this.width,this.height);
+
+
+},
+
 	getStageInstance : function(idx){
 		return new DH.Stage({
 
@@ -289,9 +296,7 @@ var game=scope.game=new DH.Game({
 
 				var context=this.game.context;
 				
-				context.clearRect(0,0,this.game.width,this.game.height);
-
-
+				
 				context.save();
 
 				this.player.drawViewPath(context,this.map.x,this.map.y);
