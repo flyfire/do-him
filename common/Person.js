@@ -105,7 +105,9 @@ Person.prototype={
 	rage : function(){
 		if (this.power==100 && this.state==0){
 			this.state=1;
+
 		}
+		this.player.want2Rage=false;
 	},
 	syncInfo : function(info){
 
