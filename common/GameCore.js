@@ -41,10 +41,13 @@ GameCore.prototype={
 	addPerson : function(info){
 		var id=this.checkName(info[1]);
 		var name=this.checkName(info[2]);
+		var pos=this.getRandomPos();
 		var person=new Person({
 			id : id,
 			name : name,
-			map : this.map
+			map : this.map,
+			x : pos[0],
+			y : pos[1]
 		});
 		person.init();
 		this.personList.push(person);
