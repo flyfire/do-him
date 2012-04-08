@@ -51,7 +51,7 @@ server.on("close", function(conn){
 });
 
 //启动服务 监听88端口
-var _port=process.argv[2]||88;
+var _port=process.argv[2]||8008;
 server.listen(_port);
 util.log("Server Started. port : "+_port);
 game.init(server);
