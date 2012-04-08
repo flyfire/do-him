@@ -18,7 +18,7 @@
 			var h=window.screen.availHeight;
 			var w=window.screen.availWidth;
 
-			if (h<1024){
+			if (h<1000){
 				WIDTH=960;
 				HEIGHT=600;
 			}else{
@@ -34,7 +34,7 @@
 		}else{
 			vp='<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1" />';				
 		}
-		alert(window.screen.availHeight+"--"+window.innerHeight+"---"+vp);
+		// alert(window.screen.availHeight+"--"+window.innerHeight+"---"+vp);
 		document.write(vp);
 
 	})(this);
