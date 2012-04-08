@@ -27,6 +27,7 @@ server.on("connection", function(conn){
     //msg.rotation = 10;
     //game.receive_message(conn.id, msg);
     var info = JSON.parse(message);
+     util.log("message: "+ message);
     if(info[0] == DH.CONST.CMD.update)
     {
         game.updatePersonMoveInfo(info);
