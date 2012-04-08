@@ -20,7 +20,6 @@ server.on("connection", function(conn){
 
   conn.on("message", function(message){
     var info = JSON.parse(message);
-     util.log("message: "+ message);
     if(info[0] == DH.CONST.CMD.update)
     {
         game.updatePersonMoveInfo(info);

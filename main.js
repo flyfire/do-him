@@ -413,6 +413,7 @@ clear : function(){
 						 this.player.want2Rage 
 						 +"]";
 					this.game.sendPersonInfo( infoStr );
+					this.player.want2Rage=false;
 					return;
 				}	
 
