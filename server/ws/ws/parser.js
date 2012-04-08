@@ -102,15 +102,18 @@ while(!end){
              length=this.unpack(data.slice(8));
              startIdx=2;
             }
-            var mask=data.slice(startIdx,startIdx+4);
-            var endIdx=startIdx+4+length;
-            var text=data.slice(startIdx+4,endIdx);
-            msg+=(this.unmask(mask,text));
-            if ( (endIdx) == data.length ){
-              end=true;
-            }else{
-              data=data.slice(endIdx)
+            if (masked){
+              var mask=data.slice(startIdx,startIdx+4);
+              var endIdx=startIdx+4+length;
+              var text=data.slice(startIdx+4,endIdx);
+              msg+=(this.unmask(mask,text));
             }
+              if ( (endIdx) == data.length ){
+                end=true;
+              }else{
+                data=data.slice(endIdx)
+              }
+            
           }
 
         }
