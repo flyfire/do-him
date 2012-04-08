@@ -89,7 +89,6 @@ while(!end){
         var length = data[1] & 0x7f;
         var masked = !data[1]?false:(data[1] & 0x80) == 0x80;
 
-        util.log(3123)
           if (data[0] != 0x81){
             return ;    
           } 
@@ -121,8 +120,6 @@ if (this.frameData.length>0){
   var pkt = new Buffer(this.frameData);
 msg=pkt.toString("utf8");
 }
-util.log(this.frameData.length);
-util.log(msg)
 this.emit('message',msg);
 this.order = 0;
 this.frameData = [];

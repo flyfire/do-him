@@ -70,12 +70,27 @@ var game=scope.game=new DH.Game({
 
 		    var host=this.host||document.location.hostname||"localhost";
 		    
-		    var port=this.port||88;
+		    var port=this.port||8008;
 
 		    var conn = new WebSocket("ws://"+host+":"+ port +"/");
 
 		    conn.onmessage = function(evt) {
-		      console.log(evt.data);
+		    	try{
+		    	var info=JSON.parse(evt.data);
+		    	var cmd=info[0];
+		    	if (cmd==DH.CONST.CMD.login){
+		    		game.currentStage.player.id=info[1];
+		    		game.currentStage.player.serverReady=true;
+		    		// console.log("info"+info)
+		    	}else if(cmd==DH.CONST.CMD.sync){
+		    		 // console.log(evt.data);
+		    		game.currentStage.player.syncInfo(info);
+		    	}
+		    }catch(e){
+		    	console.log(evt.data)
+		    }
+		     
+		      // var data=JSON.parse(evt.data);
 		    };
 
 		    conn.onclose = function() {
@@ -86,7 +101,9 @@ var game=scope.game=new DH.Game({
 		      console.log("** you have been connected");
 
 		      conn.send( JSON.stringify([
-
+		      		DH.CONST.CMD.login,
+		      		0,
+		      		"Name"
 
 		      	] ) );
 		    }
@@ -147,7 +164,7 @@ var game=scope.game=new DH.Game({
 
 	sendPersonInfo : function(infoStr){
 		if (this.ws && this.ws.readyState==1){
-			
+
 			this.ws.send(infoStr);
 		}
 
@@ -186,8 +203,8 @@ clear : function(){
 
 				this.player=new Person({
 					id : DH.ID_SEED,
-					x : 200,
-					y : 200,
+					x : 0,
+					y : 0,
 					img : this.game.getRes("player")
 
 				});
@@ -257,9 +274,6 @@ clear : function(){
 
 				this.player.renderWeapon(context);
 
-				this.player.personList=[
-					[12,"npc_1",270,330,90,true]
-				];
 				var share=this.personShare;
 
 				// if (!window.taskAdded){
@@ -274,8 +288,8 @@ clear : function(){
 				// 		Me.showMilk=true;
 				// 		},1000);
 						
-				for (var i=this.player.personList.length-1;i>=0;i--){
-					var p=this.player.personList[i];
+				for (var i=this.player.enemyList.length-1;i>=0;i--){
+					var p=this.player.enemyList[i];
 					if (p[5]==2){
 
 					}else{
@@ -326,17 +340,18 @@ clear : function(){
 
 			handleInput : function(deltaTime){
 
-				this.player.walk=false;
+				
 
-				var rotation=null;
+				var rotationD=null;
 
 				var changed=false;
+				var walk=false;
 
 				if (joystick.moveDistance>=10){
 					
-					this.player.walk=true;
+					walk=true;
 
-					rotation=joystick.rotation;
+					rotationD=joystick.rotation;
 
 					changed=true;
 
@@ -366,13 +381,13 @@ clear : function(){
 					}
 
 					if (speedX||speedY){
-						this.player.walk=true;
+						walk=true;
 
 						dx=speedX;
 						dy=speedY;
 
 						var rad=Math.atan2(dy, dx);	
-						rotation=rad*DH.CONST.RAD_TO_DEG;
+						rotationD=rad*DH.CONST.RAD_TO_DEG;
 						
 						changed=true;
 					}
@@ -384,26 +399,29 @@ clear : function(){
 					this.player.want2Rage=rage;
 				}
 
-				var infoStr="["+
+				this.player.walk=walk;
+				if (changed){
+					this.player.setRotationD(rotationD);
+				}
+
+				if (this.player.serverReady){
+					var infoStr="["+
 						'"'+DH.CONST.CMD.update+'",'+
 						 this.player.id +","+ 
-						 rotation +","+ 
-						 this.player.walk+","+ 
+						 rotationD +","+ 
+						 walk+","+ 
 						 this.player.want2Rage 
 						 +"]";
-				this.game.sendPersonInfo( infoStr );
-				// run at server :
-				//   this.player.walk=false;
-				//   return;
-				
+					this.game.sendPersonInfo( infoStr );
+					return;
+				}	
 
+				
 				if (this.player.want2Rage){
 					this.player.rage();
 					this.player.want2Rage=false;
 				}
-				if (changed){
-					this.player.setRotation(rotation);
-				}
+			
 
 
 

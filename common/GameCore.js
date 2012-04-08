@@ -1,6 +1,7 @@
 
 var util = util||require('util');
 var DH = DH||require('./Base');
+var Person = Person||require('./Person');
 
 module.exports=GameCore;
 
@@ -31,14 +32,24 @@ GameCore.prototype={
 		this.personList=[];
 		this.personMap={};
 		this.personNameCache={};
+		this.map={
+			width : 0,
+			height : 0
+		}
 	},
 
-	addPerson : function(cfg){
-		cfg.name=this.checkName(cfg.name);
-		var person=new Person(cfg);
+	addPerson : function(info){
+		var id=this.checkName(info[1]);
+		var name=this.checkName(info[2]);
+		var person=new Person({
+			id : id,
+			name : name,
+			map : this.map
+		});
+		person.init();
 		this.personList.push(person);
-		this.personMap[cfg.id]=person;
-		this.personNameCache[cfg.name]=person;
+		this.personMap[id]=person;
+		this.personNameCache[name]=person;
 
 		var resized=this.resizeMap();
 	},
@@ -46,6 +57,7 @@ GameCore.prototype={
 	removePerson : function(id){
 		var person=this.personMap[id];
 		if (person){
+			
 			for (var i=this.personList.length-1;i>=0;i--){
 				var p=this.personList[i];
 				if (p==person){
@@ -56,6 +68,7 @@ GameCore.prototype={
 			delete this.personMap[id];
 			delete this.personNameCache[person.name];
 		}
+
 
 		var resized=this.resizeMap();
 	},
@@ -70,14 +83,18 @@ GameCore.prototype={
 		return name;
 	},
 
-	updatePersonMoveInfo : function(infoList){
-		var id=infoList[0];
+	updatePersonMoveInfo : function(info){
+		var id=info[1];
 		var person=this.personMap[id];
-		person.rotation=p[1];
-		person.walk=p[2];
-		var raging=p[3];
-		if (raging==true && person.power==100 && person.state!=1){
-			person.state=1;
+		if (person){
+			person.rotationD=info[2];
+			person.walk=info[3];
+			var raging=info[4];
+			if (raging==true && person.power==100 && person.state!=1){
+				person.state=1;
+			}
+		}else{
+			util.log(id);
 		}
 	},
 
@@ -105,12 +122,12 @@ GameCore.prototype={
 		var sprites=this.personList;
 	    for( var s = 0; s < sprites.length; s++ ) {
 			var spriteA = sprites[s];
-			var personList=spriteA.personList;
+			var enemyList=spriteA.enemyList;
 
-			for (var i=personList.length-1;i>=0;i--){
-				var spriteB=personList[i];
+			for (var i=enemyList.length-1;i>=0;i--){
+				var spriteB=enemyList[i];
 				var rs=spriteA.collideOther(spriteB);
-				personList[i]=[
+				enemyList[i]=[
 						spriteB.id,
 						spriteB.name,
 						spriteB.x,
@@ -120,6 +137,29 @@ GameCore.prototype={
 					];
 			}
 		}
+
+	},
+
+
+	checkAllPersonAABB : function(){
+
+		var sprites=this.personList;
+		var len=sprites.length;
+
+	    for( var i = 0; i < len; i++ ) {
+			var spriteA = sprites[i];
+			spriteA.enemyList=[];
+
+			for( var j = 0; j < len; j++ ) {
+				var spriteB = sprites[j];
+				if( spriteA!=spriteB
+					&& spriteA.inAABB(spriteB.x,spriteB.y)  ) {
+						spriteA.enemyList.push(spriteB);
+				}
+
+			}
+		}
+
 
 	},
 
@@ -140,68 +180,29 @@ GameCore.prototype={
 					p.power,
 					p.doNum,
 					p.beDidNum,
-					p.personList
-				];
 
+					p.viewPoly,
+					
+					p.enemyList,
+					this.map.width,
+					this.map.height
+				];
+				// console.log(p.id+"---"+p.enemyList.length)
 				this.game.server.send(p.id , JSON.stringify(info) );
 			}
 		}
 		
 	},
 
-	checkAllPersonAABB : function(){
-		var gridSize=200;
-		var gridCol=Math.ceil(this.mapWidth/gridSize);
-		var sprites=this.personList;
-
-		var grid = {};
-	    for( var s = 0; s < sprites.length; s++ ) {
-			var spriteA = sprites[s];
-			spriteA.personList=[];
-
-			var bb=spriteA.getAABB();
-			var	colMin = Math.floor( bb[0]/gridSize ) ,
-				rowMin = Math.floor( bb[1]/gridSize ) ,
-				colMax = Math.floor( bb[2]/gridSize ) ,
-				rowMax = Math.floor( bb[3]/gridSize ) ;
-			
-			var checked = {};
-			var startIdx=rowMin*gridCol+colMin;
-			for( var row = rowMin; row <= rowMax; row++ ) {
-
-				var idx=startIdx;
-				for( var col = colMin; col <= colMax; col++ ) {
-					var group=grid[idx];
-					if( !group ) {
-						grid[idx] = [spriteA];
-					}else {
-						for( var c = 0, len=group.length; c<len; c++ ) {
-							var spriteB=group[c];
-							if( !checked[spriteB.id] 
-								&& spriteA.inAABB(spriteB.x,spriteB.y)  ) {
-								spriteA.personList.push(spriteB);
-
-								checked[spriteB.id] = true;
-							}
-						}
-						group.push(spriteA);
-					}
-					idx++;
-				}
-				startIdx+=gridCol;
-			}
-		}
-		
-
-	},
 
 	personArea : 1200 * 1200 ,
 	resizeMap : function(){
-		
+
 		var ts= this.personArea * this.personList.length;
+
 		var ns=Math.ceil( Math.sqrt(ts) ) ;
-		if (this.mapWidth!=ns){
-			this.mapWidth=this.mapHeight=s;
+		if (this.map.width!=ns){
+			this.map.width=this.map.height=ns;
 			return true;
 		}
 		return false;
@@ -210,8 +211,8 @@ GameCore.prototype={
 
 	getRandomPos : function(){
 		return [
-			DH.genRandom(5,this.mapWidth-5),
-			DH.genRandom(5,this.mapHeight-5)
+			DH.genRandom(5,this.map.width-5),
+			DH.genRandom(5,this.map.height-5)
 		]
 	},
 

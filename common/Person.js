@@ -47,6 +47,11 @@ Person.prototype={
 	beDidNum : 0 ,
 
 	init : function(){
+		
+		this.enemyList=[];
+
+		this.lastX=this.x;
+		this.lastY=this.y;
 
 		var length=250;
 		var width=250;
@@ -93,8 +98,8 @@ Person.prototype={
 	setPos : function(){
 
 	},
-	setRotation : function(rotation){
-		this.rotationD=rotation;
+	setRotationD : function(setRotation){
+		this.rotationD=setRotation;
 
 	},
 	rage : function(){
@@ -102,8 +107,43 @@ Person.prototype={
 			this.state=1;
 		}
 	},
+	syncInfo : function(info){
+
+					// p.id,
+					// p.name,
+					// p.x,
+					// p.y,
+					// p.rotation,
+					// p.state,
+					// p.power,
+					// p.doNum,
+					// p.beDidNum,
+					// p.enemyList,
+					// this.map.width,
+					// this.map.height
+
+		this.id=info[1];
+		this.name=info[2];
+		this.x=info[3];
+		this.y=info[4];
+		this.rotation=info[5];
+		this.state=info[6];
+		this.power=info[7];
+		this.doNum=info[8];
+		this.beDidNum=info[9];
+
+		this.viewPoly=info[10];
+
+		this.enemyList=info[11];
+		this.map.width=info[12];
+		this.map.height=info[13];
+	},
 
 	update : function(deltaTime ){
+
+		if (this.serverReady){
+			return;
+		}
 
 		if (this.state==1){
 			this.power-=this.powerSpeed;
@@ -154,10 +194,13 @@ Person.prototype={
 		var speedY=speed*Math.sin(rad);
 
 		var changed=false;
+		
 		if (speedX ||speedY) {
 			changed=true;
+
 			this.lastX=this.x;
 			this.lastY=this.y;
+			
 			this.x+=speedX;
 			this.y+=speedY;
 
