@@ -70,7 +70,7 @@ GameCore.prototype={
 		return name;
 	},
 
-	setPersonMoveInfo : function(infoList){
+	updatePersonMoveInfo : function(infoList){
 		var id=infoList[0];
 		var person=this.personMap[id];
 		person.rotation=p[1];
