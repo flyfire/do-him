@@ -11,12 +11,24 @@ player_manager.add_player = function(id, x, y)
     player_manager.list[id].init(id, x, y);
 }
 
+
 player_manager.remove_player = function(id)
 {
     util.log("player_manager: remove player! id:"+ id);
     player_manager.list[id].shutdown();
     delete player_manager.list[id];
 }
+player_manager.update = function(step)
+{
+
+    for(var key in player_manager.list)
+    {
+       player_manager.list[key].update(step);
+    }
+
+
+}
+
 
 player_manager.receive_event = function(step, evt)
 {

@@ -45,7 +45,14 @@ game.feedback = function()
 {
     if(game.server)
     {
-        //game.server.broadcast("哈哈哈哈哈");
+    
+        var player_list = player_manager.list;
+        for(var key in player_list)
+        {
+            var x = player_list[key].get_x();
+            var y = player_list[key].get_y();
+          //  game.server.broadcast("!! x:" + x +", y = " +y);
+        }
     }else
     { 
         util.log("game feedback: error! no server!");
@@ -71,7 +78,7 @@ game.update = function(step)
         player_manager.receive_event(step, evt);
     }
     //更新所有角色
-    //player_manager.update(stpe);
+    player_manager.update(step);
     // 更新场景
     scene.fresh(step, player_manager);
     // 反馈消息
@@ -116,7 +123,7 @@ game.run = function()
         }
         if(step != 0)
             game.update(step);
-			setTimeout(go, 1000/60);
+        setTimeout(go, 1000/60);
     }
                 
     

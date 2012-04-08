@@ -1,3 +1,8 @@
+var ViewField = require("./ViewField").ViewField;
+
+var DEG_90=90 * Math.PI/180;
+var DEG_TO_RAD=Math.PI/180;
+var RAD_TO_DEG=180/Math.PI;
 
 var Person=function(cfg){	
 
@@ -114,11 +119,11 @@ Person.prototype={
 				deltaR=speedR;
 			}
 			this.rotation+=deltaR;
-			this.view.rotate(deltaR);
+			this.view.rotate(deltaR);//无法通过
 		}
 
 		if (dr==0){
-			var rad=this.rotation*DH.CONST.DEG_TO_RAD;
+			var rad=this.rotation*DEG_TO_RAD;
 			var speedX=speed*Math.cos(rad);
 			var speedY=speed*Math.sin(rad);
 			this.x+=speedX;
@@ -160,7 +165,7 @@ Person.prototype={
 		var y=this.y-this.mapY;
 
 		context.translate( x , y );
-		context.rotate( this.rotation*DH.CONST.DEG_TO_RAD );
+		context.rotate( this.rotation*DEG_TO_RAD );
 
 		context.translate( -this.baseX , -this.baseY );
 

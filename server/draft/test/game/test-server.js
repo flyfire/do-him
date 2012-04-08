@@ -23,6 +23,7 @@ server.on("connection", function(conn){
   conn.on("message", function(message){
     var msg = {};
     msg.text = message;
+    msg.rotation = 10;
     game.receive_message(conn.id, msg);
     //向所有客户端发送信息.
     util.log(conn.id+" recive & send : "+message + "; time:" + game.time);
