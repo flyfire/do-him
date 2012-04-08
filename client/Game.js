@@ -210,7 +210,7 @@ DH.Game=DH.newClass({
 		}
 		this.currentStage.beforeRun(this);	
 		this._playing=true;		
-		this.timer=(new DH.Timer()).start();
+		this.timer=(new Timer()).start();
 		this.run();
 	},
 	pause : DH._TODO_,

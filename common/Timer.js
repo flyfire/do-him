@@ -1,10 +1,20 @@
 
-;(function(scope,undefined){
+var util = util||require('util');
+var DH = DH||require('./Base');
 
-var DH=scope.DH;
+module.exports=Timer;
 
+function Timer(cfg){	
 
-DH.Timer=DH.newClass({
+	for (var property in cfg ){
+		this[property]=cfg[property];
+	}
+
+};
+
+Timer.prototype= {
+
+	constructor : Timer ,
 
 	staticDeltaTime : 0 ,
 
@@ -77,7 +87,4 @@ DH.Timer=DH.newClass({
 		this.duration+=this.deltaTime;
 		return this.currentTime;
 	}
-});
-
-
-})(this);
+};

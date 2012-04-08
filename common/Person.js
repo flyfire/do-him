@@ -2,8 +2,10 @@
 var util = util||require('util');
 var DH = DH||require('./Base');
 
+module.exports=Person;
 
-var Person=function(cfg){	
+
+function Person(cfg){	
 
 	for (var property in cfg ){
 		this[property]=cfg[property];

@@ -1,15 +1,18 @@
 
+var util = util||require('util');
+
+
 
 ;(function(scope,undefined){
 
 	var DH=scope.DH=scope.DH||{};
-	
-	DH.CONST={};
 
+	module.exports=DH;
+	
+DH.CONST={};
 DH.CONST.DEG_TO_RAD=Math.PI/180;
 DH.CONST.RAD_TO_DEG=180/Math.PI;
 DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
-
 DH.CONST.CMD={
 	login : "in",
 	leave : "l",
@@ -17,7 +20,6 @@ DH.CONST.CMD={
 	update : "u",
 	err : "e"
 };
-
 DH.CONST.STATE={
 	normal : 0,
 	raging : 1,

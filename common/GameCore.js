@@ -1,7 +1,11 @@
 
+var util = util||require('util');
+var DH = DH||require('./Base');
+
+module.exports=GameCore;
 
 
-var GameCore=function(cfg){	
+function GameCore(cfg){	
 
 	for (var property in cfg ){
 		this[property]=cfg[property];
