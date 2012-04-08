@@ -120,8 +120,8 @@ var game=scope.game=new DH.Game({
 	},
 	onInit : function(){
 		
-		this.curScoreBar=$$('.cur-score');
-		this.hiScoreBar=$$('.hi-score');
+		this.doNumBar=$$('.cur-score em');
+		this.beDidNumBar=$$('.hi-score em');
 
 		DH.initEvent();
 
@@ -336,6 +336,9 @@ clear : function(){
 
 				context.drawImage(this.milkImg,10,10);
 				}
+
+				this.game.doNumBar.innerHTML=this.player.doNum;
+				this.game.beDidNumBar.innerHTML=this.player.beDidNum;
 			},
 
 			handleInput : function(deltaTime){

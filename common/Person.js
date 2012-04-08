@@ -107,7 +107,7 @@ Person.prototype={
 			this.state=1;
 
 		}
-		this.player.want2Rage=false;
+		this.want2Rage=false;
 	},
 	syncInfo : function(info){
 
