@@ -126,6 +126,8 @@ Person.prototype={
 		this.enemyList=info[11];
 		this.map.width=info[12];
 		this.map.height=info[13];
+		this.doing=info[14];
+		this.diding=info[15];
 	},
 
 	update : function(deltaTime ){
@@ -253,7 +255,9 @@ Person.prototype={
 			if (rs){
 				sprite.state=2;
 				this.doNum++;
+				this.doing=true;
 				sprite.beDidNum++;
+				sprite.diding=true;
 			}
 			return rs;
 		}

@@ -186,10 +186,14 @@ GameCore.prototype={
 					
 					p.enemyList,
 					this.map.width,
-					this.map.height
+					this.map.height,
+					p.doing,
+					p.diding
 				];
 				// console.log(p.id+"---"+p.enemyList.length)
 				this.game.server.send(p.id , JSON.stringify(info) );
+				p.doing=false;
+				p.diding=false;
 			}
 		}
 		

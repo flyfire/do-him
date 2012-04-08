@@ -231,21 +231,23 @@ clear : function(){
 				this.milkImg=this.game.getRes("milk");
 				this.itemList=[];
 
-				var flower=new Flower({
-					x : 200,
-					y : 300,
+				this.flower=new Flower({
+					x : this.game.width/2,
+					y : this.game.height/2,
 					img : this.flowerImg
 				});
-				flower.init();
-				var milk=new Milk({
+				this.flower.init();
+
+				this.milk=new Milk({
 					x : this.game.width/2,
 					y : this.game.height/2,
 					img : this.milkImg
 				});
-				milk.init();
+				this.milk.init();
 
-				// this.itemList.push(flower);
-				this.itemList.push(milk);
+				this.itemList.push(this.flower);
+				this.itemList.push(this.milk);
+
 			},
 
 
@@ -254,13 +256,21 @@ clear : function(){
 				this.player.update(deltaTime);
 				this.map.update(deltaTime);
 
+				if (this.player.doing){
+					this.player.doing=false;
+					this.milk.reset();
+				}
+				if (this.player.diding){
+					this.player.doing=false;
+					this.flower.reset();
+				}
 				for (var i=this.itemList.length-1;i>=0;i--){
 					var f=this.itemList[i];
 					f.update(deltaTime);
-					if (f.alpha==0){
-						f.img=null;
-						this.itemList.splice(i,1);
-					}
+					// if (f.alpha==0){
+					// 	f.img=null;
+					// 	this.itemList.splice(i,1);
+					// }
 				}
 				
 			},
@@ -305,6 +315,7 @@ clear : function(){
 
 				}
 
+
 			},
 
 			render : function(deltaTime){
@@ -332,10 +343,7 @@ clear : function(){
 					f.render(context,this.map.x,this.map.y);
 				}
 
-				if (this.showMilk){
 
-				context.drawImage(this.milkImg,10,10);
-				}
 
 				this.game.doNumBar.innerHTML=this.player.doNum;
 				this.game.beDidNumBar.innerHTML=this.player.beDidNum;

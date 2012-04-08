@@ -144,18 +144,32 @@ Flower.prototype={
 		this.baseY=this.img.height/2;
 	},
 
+	reset : function(){
+		this.enabled=true;
+		this.alpha=1;
+		this.scale=0.1;
+	},
+
 	update : function(deltaTime){
-
+		if (!this.enabled){
+			return;
+		}
 		this.alpha-=deltaTime*0.0004;
-		this.alpha=Math.max(0,this.alpha);
 		this.scale+=deltaTime*0.003;
+		this.alpha=Math.max(0,this.alpha);
 
+		if (this.alpha==0){
+			this.enabled=false;
+		}
 
 	},
 
-	render : function(context,ox,oy){
-		var x=this.x-ox;
-		var y=this.y-oy;
+	render : function(context){
+		if (!this.enabled){
+			return;
+		}
+		var x=this.x;
+		var y=this.y;
 		var alpha=this.alpha;
 		var scale=this.scale;
 		context.globalAlpha=alpha;
@@ -192,16 +206,27 @@ Milk.prototype={
 		this.baseY=this.img.height/2;
 	},
 
-	update : function(deltaTime){
+	reset : function(){
+		this.enabled=true;
+		this.alpha=1;
+		this.scale=0.1;
+	},
 
+	update : function(deltaTime){
+		if (!this.enabled){
+			return;
+		}
 		this.scale+=deltaTime*0.01;
 		this.scale=Math.min(1,this.scale);
 	
 		if (this.scale==1){
-			//this.alpha-=deltaTime*0.0004;
+			this.alpha-=deltaTime*0.0004;
 		}
 		this.alpha=Math.max(0,this.alpha);
 
+		if (this.alpha==0){
+			this.enabled=false;
+		}
 	},
 
 	render : Flower.prototype.render
