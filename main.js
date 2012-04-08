@@ -146,7 +146,10 @@ var game=scope.game=new DH.Game({
 	},
 
 	sendPersonInfo : function(infoStr){
-		this.ws.send(infoStr);
+		if (this.ws && this.ws.readyState==1){
+			
+			this.ws.send(infoStr);
+		}
 
 	},
 
