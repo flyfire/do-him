@@ -203,12 +203,13 @@ GameCore.prototype={
 	},
 
 
-	personArea : 900 * 900 ,
+	personArea : 600 * 600 ,
 	resizeMap : function(){
 
 		var ts= this.personArea * this.personList.length;
 
 		var ns=Math.ceil( Math.sqrt(ts) ) ;
+		ns=Math.max(1300,ns);
 		if (this.map.width!=ns){
 			this.map.width=this.map.height=ns;
 			return true;
