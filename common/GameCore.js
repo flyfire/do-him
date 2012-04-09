@@ -171,7 +171,8 @@ GameCore.prototype={
 
 
 	syncAllPerson : function(deltaTime){
-		for (var i=this.personList.length-1;i>=0;i--){
+		var len=this.personList.length;
+		for (var i=len-1;i>=0;i--){
 			var p=this.personList[i];
 			
 			if (this.game.server){
@@ -194,7 +195,9 @@ GameCore.prototype={
 					this.map.width,
 					this.map.height,
 					p.doing,
-					p.diding
+					p.diding,
+					len
+
 				];
 				// util.log(p.id+"---"+p.enemyList.length)
 				this.game.server.send(p.id , JSON.stringify(info) );

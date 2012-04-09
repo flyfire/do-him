@@ -46,6 +46,8 @@ Person.prototype={
 	doNum : 0,
 	beDidNum : 0 ,
 
+	playerNum : 1 ,
+	
 	init : function(){
 		
 		this.enemyList=[];
@@ -128,6 +130,7 @@ Person.prototype={
 		this.map.height=info[13];
 		this.doing=info[14];
 		this.diding=info[15];
+		this.playerNum=info[16];
 	},
 
 	update : function(deltaTime ){

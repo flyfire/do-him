@@ -101,7 +101,7 @@ a, a:hover {
 	color: rgba(255,255,255,0.7);
 }
 
-#Stage .time, #Stage .cur-score,#Stage .hi-score {
+#Stage .time, #Stage .cur-score,#Stage .hi-score , #Stage .player-num{
 	font-size: 22px;
 	font-weight: bold;
 	text-shadow: 0px 0px 25px rgba(255,255,255,0.7);
@@ -118,7 +118,7 @@ a, a:hover {
 	left: 10px;
 	top: 10px;
 }
-#Stage .cur-score,#Stage .hi-score {
+#Stage .cur-score, #Stage .hi-score, #Stage .player-num {
 	display : none;
 	min-width : 100px;
 	right: 10px;
@@ -127,6 +127,12 @@ a, a:hover {
 #Stage .hi-score {
 	display : none;
 	top: 50px;
+}
+
+#Stage .player-num {
+	display : none;
+	left: 50px;
+	right: auto;
 }
 
 #GameOver .ys, #GameOver .ysnum {

@@ -125,6 +125,7 @@ var game=scope.game=new DH.Game({
 		
 		this.doNumBar=$$('.cur-score em');
 		this.beDidNumBar=$$('.hi-score em');
+		this.playerNumBar=$$(".player-num em");
 		this.powerBar=$id("power-bar");
 
 		this.context.fillStyle="#1155ff";
@@ -197,6 +198,7 @@ clear : function(){
 
 			beforeRun : function(){
 				this.game.stopgame=false;
+				$css($$('.player-num'), 'display', 'block');
 				$css($$('.cur-score'), 'display', 'block');
 				$css($$('.hi-score'), 'display', 'block');
 
@@ -357,6 +359,7 @@ clear : function(){
 
 				this.game.doNumBar.innerHTML=this.player.doNum;
 				this.game.beDidNumBar.innerHTML=this.player.beDidNum;
+				this.game.playerNumBar.innerHTML=this.player.playerNum;
 
 				var power=this.player.power;
 
