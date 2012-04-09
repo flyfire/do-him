@@ -66,6 +66,7 @@ var game=scope.game=new DH.Game({
 	ws : null,
 
 	inputName : function(){
+		return;
 		var name=prompt("设置昵称(最多8字符,不设定直接点确定) : ");
 		name=name||"Name";
 		name=name.substring(0,8);
