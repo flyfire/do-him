@@ -129,7 +129,7 @@ var game=scope.game=new DH.Game({
 		this.powerBar=$id("power-bar");
 
 		this.context.fillStyle="#1155ff";
-		this.context.font="18pt arial";
+		this.context.font="20px arial";
 		
 
 		DH.initEvent();
