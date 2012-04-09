@@ -542,7 +542,8 @@ function initJoystick(){
 
 var button=new Toucher.Tap({
 	isTrigger : function(touchWrapper,wrapperList,touchCoontroller){
-		return touchWrapper.startTarget.id=="stick2";
+		var id=touchWrapper.startTarget.id;
+		return id=="stick2" || id=="sticktext";
 	},
 	onTap : function(touchWrappers,event,touchController){
 		game.currentStage.player.want2Rage=true;
