@@ -100,6 +100,9 @@ GameCore.prototype={
 				person.state=1;
 			}
 		}else{
+			if (this.game.server && this.game.server.kick){
+				this.game.server.kick(id);
+			}
 			util.log("err id : "+id);
 		}
 	},

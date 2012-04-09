@@ -97,6 +97,17 @@ function Server(o) {
     });
   };
 
+  this.kick = function(id) {
+    try{
+      manager.find(id, function(client) {
+         client.close();  
+      });
+    }catch(e){
+      util.log("kick err")  
+    }
+
+  };
+
   this.broadcast = function(data) {
     manager.forEach(function(client) {
       clientWrite(client, data);
