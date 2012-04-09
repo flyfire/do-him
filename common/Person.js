@@ -258,9 +258,9 @@ Person.prototype={
 			if (rs){
 				sprite.state=2;
 				this.doNum++;
-				this.doing=true;
 				sprite.beDidNum++;
-				sprite.diding=true;
+				this.doing=sprite.name;
+				sprite.diding=this.name;
 			}
 			return rs;
 		}

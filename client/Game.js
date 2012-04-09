@@ -135,6 +135,7 @@ DH.Game=DH.newClass({
 		this.canvas.width=this.width;
 		this.canvas.height=this.height;
 		this.context=this.canvas.getContext('2d');
+		// TODO : why ?
 		this.viewport.appendChild(this.canvas);
 	
 	},
@@ -164,9 +165,11 @@ DH.Game=DH.newClass({
 		var Me=this;
 		this.callRun = function(){
 			Me.run();
-		}		
+		}
+
 		this.initViewport();
-		
+
+
 		this.onInit();
 	},
 	onInit : DH.noop ,

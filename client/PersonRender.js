@@ -141,6 +141,7 @@ Flower.prototype={
 
 	img : null,
 
+
 	init : function(){
 		this.baseX=this.img.width/2;
 		this.baseY=this.img.height/2;
@@ -162,10 +163,11 @@ Flower.prototype={
 
 		if (this.alpha==0){
 			this.enabled=false;
+			this.onEnd();
 		}
 
 	},
-
+	onEnd : function(){},
 	render : function(context){
 		if (!this.enabled){
 			return;
@@ -228,8 +230,11 @@ Milk.prototype={
 
 		if (this.alpha==0){
 			this.enabled=false;
+			this.onEnd();
 		}
+
 	},
+	onEnd : function(){},
 
 	render : Flower.prototype.render
 }

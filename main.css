@@ -35,7 +35,7 @@ body, html{height: 100%; width:100%;}
 }
 
 
-#Stage .time, #Stage .cur-score,#Stage .hi-score {
+#Stage .time, #Stage .cur-score,#Stage .hi-score  {
 	font-size: 20px;
 	font-weight: bold;
 	text-shadow: 0px 0px 25px rgba(255,255,255,0.7);
@@ -46,6 +46,24 @@ body, html{height: 100%; width:100%;}
 	border-radius : 8px;
 	z-index : 999999 ;
 }
+
+#Stage .did-text {
+	font-size: 32px;
+	font-weight: bold;
+	text-shadow: 0px 0px 30px rgba(0,0,0,1);
+	position: absolute;
+	color: rgba(255,200,160,1);
+	background-color : rgba(100,100,100,0.4);
+	min-width : 99%;
+	width : 100%;
+	padding : 10px;
+	z-index : 99;
+	text-align : center;
+	top: 150px;
+	display : none;
+
+}
+
 #Stage .time {
 	display : none;
 	min-width : 100px;	

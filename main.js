@@ -128,6 +128,7 @@ var game=scope.game=new DH.Game({
 		this.beDidNumBar=$$('.hi-score em');
 		this.playerNumBar=$$(".player-num em");
 		this.powerBar=$id("power-bar");
+		this.didTextBar=$id("did-text");
 
 		this.context.fillStyle="#1155ff";
 		this.context.font="20px arial";
@@ -247,7 +248,10 @@ clear : function(){
 				this.flower=new Flower({
 					x : this.game.width/2,
 					y : this.game.height/2,
-					img : this.flowerImg
+					img : this.flowerImg,
+					onEnd : function(){
+						game.didTextBar.style.display="none";
+					}
 				});
 				this.flower.init();
 
@@ -270,12 +274,15 @@ clear : function(){
 				this.map.update(deltaTime);
 
 				if (this.player.doing){
-					this.player.doing=false;
 					this.milk.reset();
+					this.player.doing=false;
 				}
 				if (this.player.diding){
-					this.player.doing=false;
+					game.didTextBar.innerHTML="你被 "+this.player.diding+" 干了!";
+					game.didTextBar.style.display="block";
+
 					this.flower.reset();
+					this.player.diding=false;
 				}
 				for (var i=this.itemList.length-1;i>=0;i--){
 					var f=this.itemList[i];
