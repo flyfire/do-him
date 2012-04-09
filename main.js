@@ -440,14 +440,14 @@ clear : function(){
 				}
 
 				if (this.player.serverReady){
-					var infoStr="["+
-						'"'+DH.CONST.CMD.update+'",'+
-						 this.player.id +","+ 
-						 rotationD +","+ 
-						 walk+","+ 
-						 this.player.want2Rage 
-						 +"]";
-					this.game.sendPersonInfo( infoStr );
+					var infoStr=[
+							DH.CONST.CMD.update,
+							this.player.id,
+							rotationD,
+							walk,
+							this.player.want2Rage 
+						];
+					this.game.sendPersonInfo( JSON.stringify(infoStr) );
 					this.player.want2Rage=false;
 					return;
 				}	
