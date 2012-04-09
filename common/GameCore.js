@@ -99,7 +99,7 @@ GameCore.prototype={
 				person.state=1;
 			}
 		}else{
-			util.log("err : "+id);
+			util.log("err id : "+id);
 		}
 	},
 
