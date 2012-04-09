@@ -108,7 +108,7 @@ GameCore.prototype={
 		}
 	},
 
-
+	syncFlag : 0,
 	updateAllPerson : function(deltaTime){
 		for (var i=this.personList.length-1;i>=0;i--){
 			var p=this.personList[i];
@@ -125,7 +125,12 @@ GameCore.prototype={
 		}
 		this.checkAllPersonAABB();
 		this.collideAllPerson();
-		this.syncAllPerson();
+		// if (this.syncFlag===0){
+			this.syncAllPerson();
+		// }else{
+		// 	this.syncFlag++;
+		// 	this.syncFlag=this.syncFlag%2;
+		// }
 	},
 
 	collideAllPerson : function(){

@@ -10,7 +10,7 @@ var DH=scope.DH;
 
 
 
-var FPS=30;
+var FPS=DH.CONST.FPS;
 
 
 

@@ -1,6 +1,7 @@
 var util = require("util");
 var Timer = require("../common/Timer");
 var GameCore = require("../common/GameCore");
+var DH = DH||require('../common/Base');
 
 
 
@@ -10,11 +11,12 @@ var gameCore = new GameCore();
 
 var game = {};
 game.server = null;
-var FPS = 30;
+
+
 game.init = function(server)
 {
     game.server = server;
-	game._sleep = Math.floor(1000/FPS);
+	game._sleep = Math.floor(1000/DH.CONST.FPS);
     gameCore.init(game);
     
 		

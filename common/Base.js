@@ -10,6 +10,7 @@ var util = util||require('util');
 	module.exports=DH;
 	
 DH.CONST={};
+DH.CONST.FPS=30;
 DH.CONST.DEG_TO_RAD=Math.PI/180;
 DH.CONST.RAD_TO_DEG=180/Math.PI;
 DH.CONST.DEG_90= 90*DH.CONST.DEG_TO_RAD;
