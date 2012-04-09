@@ -82,7 +82,11 @@ var proto={
 
 	},
 	renderName : function(context){
-		context.fillText(this.name,this.x-this.map.x-20,this.y-this.map.y-30);
+		var name=this.name;
+		if (name==null || name=="null"){
+			name="not connected server"
+		}
+		context.fillText(name,this.x-this.map.x-20,this.y-this.map.y-30);
 	},
 
 

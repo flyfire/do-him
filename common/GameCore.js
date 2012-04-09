@@ -175,6 +175,7 @@ GameCore.prototype={
 			var p=this.personList[i];
 			
 			if (this.game.server){
+				var viewPoly=DH.roundPoly(p.viewPoly);
 				var info=[
 					DH.CONST.CMD.sync,
 					p.id,
@@ -187,7 +188,7 @@ GameCore.prototype={
 					p.doNum,
 					p.beDidNum,
 
-					p.viewPoly,
+					viewPoly,
 					
 					p.enemyList,
 					this.map.width,

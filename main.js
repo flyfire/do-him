@@ -124,7 +124,13 @@ var game=scope.game=new DH.Game({
 		this.beDidNumBar=$$('.hi-score em');
 		this.powerBar=$id("power-bar");
 
+		this.context.fillStyle="#1155ff";
+		this.context.font="18pt arial";
+		
+
 		DH.initEvent();
+
+
 
 	},
 

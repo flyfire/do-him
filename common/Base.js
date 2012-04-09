@@ -107,7 +107,17 @@ DH.CONST.STATE={
 			}
 			return poly;
 		},
-
+	roundPoly : function(poly){
+		var np=[];
+		var len=poly.length;
+		for(var i = 0; i < len; i++){
+			np.push([
+				Math.round(poly[i][0]),
+				Math.round(poly[i][1])
+			]);
+		}
+		return np;
+	},
 		rotatePoly : function(poly,deg,cx,cy){
 			var rad=deg*DH.CONST.DEG_TO_RAD;
 			var cos=Math.cos(rad), sin=Math.sin(rad);
@@ -119,8 +129,8 @@ DH.CONST.STATE={
 				var px=p[0]-cx, py=p[1]-cy;
 				var x= px*cos- py*sin;
 				var y= px*sin+ py*cos;
-				p[0]=Math.floor(x+cx);
-				p[1]=Math.floor(y+cy);
+				p[0]=x+cx;
+				p[1]=y+cy;
 			}
 			return poly;
 		},
