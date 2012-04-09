@@ -36,6 +36,7 @@ GameCore.prototype={
 			width : 0,
 			height : 0
 		}
+		this.resizeMap();
 	},
 
 	addPerson : function(info){
