@@ -53,8 +53,8 @@ Person.prototype={
 		this.lastX=this.x;
 		this.lastY=this.y;
 
-		var length=250;
-		var width=250;
+		var length=260;
+		var width=260;
 		var minWidth=40;
 		this.viewPoly=[
 			[this.x,this.y-minWidth/2],

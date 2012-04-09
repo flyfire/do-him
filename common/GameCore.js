@@ -99,7 +99,7 @@ GameCore.prototype={
 				person.state=1;
 			}
 		}else{
-			util.log(id);
+			util.log("err : "+id);
 		}
 	},
 
@@ -205,7 +205,7 @@ GameCore.prototype={
 	},
 
 
-	personArea : 500 * 500 ,
+	personArea : 400 * 400 ,
 	resizeMap : function(){
 
 		var ts= this.personArea * this.personList.length;
