@@ -68,9 +68,10 @@ var game=scope.game=new DH.Game({
 	ws : null,
 
 	inputName : function(){
-		var name=prompt("设置昵称(最多8字符,不设定直接点确定) : ");
+		var max=10;
+		var name=prompt("设置昵称(最多"+max+"字符,不设定直接点确定) : ");
 		name=name||"Name";
-		name=name.substring(0,8);
+		name=name.substring(0,max);
 		return name;
 	},
 	initWebSocket : function(){
@@ -89,9 +90,7 @@ var game=scope.game=new DH.Game({
 			    	if (cmd==DH.CONST.CMD.login){
 			    		game.currentStage.player.id=info[1];
 			    		game.currentStage.player.serverReady=true;
-			    		// console.log("info"+info)
 			    	}else if(cmd==DH.CONST.CMD.sync){
-			    		 // console.log(evt.data);
 			    		game.currentStage.player.syncInfo(info);
 			    	}
 			    }catch(e){
@@ -119,10 +118,7 @@ var game=scope.game=new DH.Game({
 		      console.log("** you have error");
 		    }
 		    this.ws=conn;
-		    // conn.close();
-		    // if(conn && conn.readyState == 1){
-		    // 
-		    // }
+
 		}
 
 	},
