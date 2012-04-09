@@ -67,6 +67,18 @@ function $id(id){
 	return document.getElementById(id);
 }
 
+function hideAddressBar(){ // iPhone
+	setTimeout(function(){ 
+		window.scrollTo(0, 1);
+		hideAddressBar();
+	}, 1);			
+}
+
+function isMobile(){
+	return "ontouchstart" in document
+}
+
+
 
 
 

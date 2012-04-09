@@ -23,7 +23,12 @@
 				HEIGHT=600;
 			}else{
 				WIDTH=1024;
-				HEIGHT=748;
+				if (window.navigator.standalone){
+
+					HEIGHT=748;
+				}else{
+					HEIGHT=672;
+				}
 			}
 		} 
 

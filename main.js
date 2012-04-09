@@ -476,6 +476,9 @@ function playGame(){
 };
 
 DH.addEvent(window,"load" ,function(){
+	if (isMobile()){
+		hideAddressBar();
+	}
 
 	playGame();
 } );
