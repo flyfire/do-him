@@ -28,6 +28,7 @@ server.on("connection", function(conn){
       try{
         info = JSON.parse(message);
       }catch(e){
+        util.log("message : "+message)
         return;
       }
     }

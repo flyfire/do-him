@@ -81,7 +81,9 @@ function Connection(manager, options, req, socket, upgradeHead) {
       if (_firstFrame) {
         try{
         parser.write(_firstFrame);
-      }catch(e){}
+       }catch(e){
+         util.log("state==4 :  "+_firstFrame)
+       }
         delete _firstFrame;
       }
     } else if (state === 5 && laststate !== 6 && laststate !== 5) {
@@ -130,7 +132,9 @@ function Connection(manager, options, req, socket, upgradeHead) {
     socket.on('data', function(data) {
       try{
       parser.write(data);
-       }catch(e){}
+       }catch(e){
+        util.log("data :  "+_firstFrame)
+       }
     });
 
     // Handle the end of the stream, and set the state

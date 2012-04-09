@@ -54,6 +54,7 @@ GameCore.prototype={
 		this.personMap[id]=person;
 		this.personNameCache[name]=person;
 
+		console.log( "player num"+this.personList.length )
 		var resized=this.resizeMap();
 	},
 
@@ -72,6 +73,7 @@ GameCore.prototype={
 			delete this.personNameCache[person.name];
 		}
 
+		console.log( "player num"+this.personList.length )
 
 		var resized=this.resizeMap();
 	},
@@ -203,7 +205,7 @@ GameCore.prototype={
 	},
 
 
-	personArea : 600 * 600 ,
+	personArea : 500 * 500 ,
 	resizeMap : function(){
 
 		var ts= this.personArea * this.personList.length;

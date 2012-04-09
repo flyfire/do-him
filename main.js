@@ -76,19 +76,19 @@ var game=scope.game=new DH.Game({
 
 		    conn.onmessage = function(evt) {
 		    	try{
-		    	var info=JSON.parse(evt.data);
-		    	var cmd=info[0];
-		    	if (cmd==DH.CONST.CMD.login){
-		    		game.currentStage.player.id=info[1];
-		    		game.currentStage.player.serverReady=true;
-		    		// console.log("info"+info)
-		    	}else if(cmd==DH.CONST.CMD.sync){
-		    		 // console.log(evt.data);
-		    		game.currentStage.player.syncInfo(info);
-		    	}
-		    }catch(e){
-		    	console.log(evt.data)
-		    }
+			    	var info=JSON.parse(evt.data);
+			    	var cmd=info[0];
+			    	if (cmd==DH.CONST.CMD.login){
+			    		game.currentStage.player.id=info[1];
+			    		game.currentStage.player.serverReady=true;
+			    		// console.log("info"+info)
+			    	}else if(cmd==DH.CONST.CMD.sync){
+			    		 // console.log(evt.data);
+			    		game.currentStage.player.syncInfo(info);
+			    	}
+			    }catch(e){
+			    	console.log(evt.data)
+			    }
 		     
 		      // var data=JSON.parse(evt.data);
 		    };

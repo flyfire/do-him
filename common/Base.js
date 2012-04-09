@@ -119,8 +119,8 @@ DH.CONST.STATE={
 				var px=p[0]-cx, py=p[1]-cy;
 				var x= px*cos- py*sin;
 				var y= px*sin+ py*cos;
-				p[0]=x+cx;
-				p[1]=y+cy;
+				p[0]=Math.floor(x+cx);
+				p[1]=Math.floor(y+cy);
 			}
 			return poly;
 		},
