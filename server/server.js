@@ -24,9 +24,9 @@ server.on("connection", function(conn){
       info = JSON.parse(message);
     }catch(e){
       var idx=message.lastIndexOf("[");
-      message=message.substring(idx);
+      var message2=message.substring(idx);
       try{
-        info = JSON.parse(message);
+        info = JSON.parse(message2);
       }catch(e){
         util.log("message : "+message)
         return;
