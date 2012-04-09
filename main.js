@@ -476,7 +476,7 @@ function playGame(){
 	//DH.$id("container").innerHTML="";	
 	game.load();
 
-	info=$id("info");
+	// info=$id("info");
 	initJoystick();
 
 	initToucher();
@@ -495,7 +495,6 @@ DH.addEvent(window,"load" ,function(){
 
 
 var stick1;
-var info;
 
 var soltRadius=60;
 var stickRadius=40;
@@ -577,11 +576,11 @@ var joystick=new Toucher.Joystick({
 			rotation=this.rotation.toFixed(2)
 
 		setDomPos(stick1 , x , y);
-		info.innerHTML=" ["+x+","+y+"],"+distance+","+rotation;
+		// info.innerHTML=" ["+x+","+y+"],"+distance+","+rotation;
 	},
 	onEnd : function(touchWrappers,event,touchController){
 		setDomPos(stick1 , 0 , 0);
-		info.innerHTML=" ["+0+","+0+"]";
+		// info.innerHTML=" ["+0+","+0+"]";
 	}
 });
 
