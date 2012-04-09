@@ -94,6 +94,9 @@ var game=scope.game=new DH.Game({
 		    };
 
 		    conn.onclose = function() {
+		    	if (game && game.currentStage && game.currentStage.player){
+		    		game.currentStage.player.name=null;
+		    	}
 		      console.log("** you have been disconnected");
 		    };
 

@@ -54,7 +54,7 @@ GameCore.prototype={
 		this.personMap[id]=person;
 		this.personNameCache[name]=person;
 
-		console.log( "player num"+this.personList.length )
+		util.log( "player num : "+this.personList.length )
 		var resized=this.resizeMap();
 	},
 
@@ -73,7 +73,7 @@ GameCore.prototype={
 			delete this.personNameCache[person.name];
 		}
 
-		console.log( "player num"+this.personList.length )
+		util.log( "player num : "+this.personList.length )
 
 		var resized=this.resizeMap();
 	},
@@ -196,7 +196,7 @@ GameCore.prototype={
 					p.doing,
 					p.diding
 				];
-				// console.log(p.id+"---"+p.enemyList.length)
+				// util.log(p.id+"---"+p.enemyList.length)
 				this.game.server.send(p.id , JSON.stringify(info) );
 				p.doing=false;
 				p.diding=false;
