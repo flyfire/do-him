@@ -97,15 +97,13 @@ var game=scope.game=new DH.Game({
 			    }catch(e){
 			    	console.log(evt.data)
 			    }
-		     
-		      // var data=JSON.parse(evt.data);
 		    };
 
 		    conn.onclose = function() {
 		    	if (game && game.currentStage && game.currentStage.player){
 		    		game.currentStage.player.name=null;
+		    		game.currentStage.player.serverReady=false;
 		    	}
-		      console.log("** you have been disconnected");
 		    };
 
 		    conn.onopen = function(){
