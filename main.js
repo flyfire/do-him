@@ -107,7 +107,7 @@ var game=scope.game=new DH.Game({
 		    };
 
 		    conn.onopen = function(){
-		      var name=this.inputName();
+		      var name=game.inputName();
 		      conn.send( JSON.stringify([
 		      		DH.CONST.CMD.login,
 		      		0,
