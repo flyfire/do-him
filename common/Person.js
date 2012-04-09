@@ -26,7 +26,7 @@ Person.prototype={
 	rotationD : 0,
 	
 	speed : 3,
-	speedR : 6,
+	speedR : 3,
 
 	baseX : 25,
 	baseY : 45,
@@ -47,7 +47,7 @@ Person.prototype={
 	beDidNum : 0 ,
 
 	playerNum : 1 ,
-	
+
 	init : function(){
 		
 		this.enemyList=[];
