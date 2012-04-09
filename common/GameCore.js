@@ -40,7 +40,7 @@ GameCore.prototype={
 	},
 
 	addPerson : function(info){
-		var id=this.checkName(info[1]);
+		var id=info[1];
 		var name=this.checkName(info[2]);
 		var pos=this.getRandomPos();
 		var person=new Person({
