@@ -55,14 +55,15 @@ GameCore.prototype={
 		this.personMap[id]=person;
 		this.personNameCache[name]=person;
 
-		util.log( "player num : "+this.personList.length )
+		util.log( name + " come --- player num : "+this.personList.length )
 		var resized=this.resizeMap();
 	},
 
 	removePerson : function(id){
 		var person=this.personMap[id];
+		var name ;
 		if (person){
-			
+			name=person.name;
 			for (var i=this.personList.length-1;i>=0;i--){
 				var p=this.personList[i];
 				if (p==person){
@@ -74,7 +75,7 @@ GameCore.prototype={
 			delete this.personNameCache[person.name];
 		}
 
-		util.log( "player num : "+this.personList.length )
+		util.log( name + " leave --- player num : "+this.personList.length )
 
 		var resized=this.resizeMap();
 	},
