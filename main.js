@@ -65,6 +65,12 @@ var game=scope.game=new DH.Game({
 
 	ws : null,
 
+	inputName : function(){
+		var name=prompt("设置昵称(最多8字符,不设定直接点确定) : ");
+		name=name||"Name";
+		name=name.substring(0,8);
+		return name;
+	},
 	initWebSocket : function(){
 		if (window["WebSocket"]) {
 
@@ -101,12 +107,11 @@ var game=scope.game=new DH.Game({
 		    };
 
 		    conn.onopen = function(){
-		      console.log("** you have been connected");
-
+		      var name=this.inputName();
 		      conn.send( JSON.stringify([
 		      		DH.CONST.CMD.login,
 		      		0,
-		      		"Name"
+		      		name||"Name"
 
 		      	] ) );
 		    }
