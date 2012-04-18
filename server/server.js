@@ -1,13 +1,20 @@
 
 var util = require("util"),
-    ws = require("./ws/ws/server"),
+    Server = require("./ws/Server"),
     game = require("./game").game;
 var DH = require("../common/Base");
 var time = 0;
 
-var server = ws.createServer({
-  debug : !true
+
+var _port=process.argv[2]||8008;
+
+var server = new Server({
+  debug : !true,
+  port : _port
 });
+server.start();
+util.log("Server Started. port : "+server.port);
+
 
 server.on('error', function (exc) {
     util.log("ignoring exception: " + exc);
@@ -16,22 +23,26 @@ server.on('error', function (exc) {
 server.on("connection", function(conn){
   util.log("Connection: "+conn.id+" ver:"+conn.version);
 
-  server.send(conn.id, JSON.stringify([DH.CONST.CMD.login, conn.id]) );
+  var login=JSON.stringify([DH.CONST.CMD.login, conn.id]);
+
+  server.send(conn.id, login );
+
 
   conn.on("message", function(message){
     var info;
-    try{
+
+    // try{
       info = JSON.parse(message);
-    }catch(e){
-      var idx=message.lastIndexOf("[");
-      var message2=message.substring(idx);
-      try{
-        info = JSON.parse(message2);
-      }catch(e){
-        util.log("message : "+message)
-        return;
-      }
-    }
+    // }catch(e){
+    //   var idx=message.lastIndexOf("[");
+    //   var message2=message.substring(idx);
+    //   try{
+    //     info = JSON.parse(message2);
+    //   }catch(e){
+    //     util.log("message : "+message)
+    //     return;
+    //   }
+    // }
 
       if(info[0] == DH.CONST.CMD.update)
       {
@@ -44,18 +55,17 @@ server.on("connection", function(conn){
 
 
   });
+
+  conn.on("close", function(conn){
+      util.log("Disconnected: "+conn.id);
+      game.removePerson(conn.id);
+      server.broadcast(conn.id+" has disconnected.");
+  });
+
 });
 
-server.on("close", function(conn){
-    util.log("Disconnected: "+conn.id);
-    game.removePerson(conn.id);
-    server.broadcast(conn.id+" has disconnected.");
-    
-});
 
-var _port=process.argv[2]||8008;
-server.listen(_port);
-util.log("Server Started. port : "+_port);
+
 game.init(server);
 game.start();
 //game.shutdown();CONST.CMD

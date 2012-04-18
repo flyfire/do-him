@@ -210,6 +210,7 @@ GameCore.prototype={
 
 				];
 				// util.log(p.id+"---"+p.enemyList.length)
+				// util.log(JSON.stringify(info))
 				this.game.server.send(p.id , JSON.stringify(info) );
 				p.doing=false;
 				p.diding=false;
