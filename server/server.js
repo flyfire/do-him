@@ -62,6 +62,10 @@ server.on("connection", function(conn){
       server.broadcast(conn.id+" has disconnected.");
   });
 
+  conn.on("error", function(reason){
+    util.log("error : "+conn.id+" "+reason);
+  });
+
 });
 
 
